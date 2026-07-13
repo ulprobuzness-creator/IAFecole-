@@ -172,14 +172,22 @@ function renderCourses(academicYear) {
 // --- SÉCURITÉ & SESSION ---
 
 /**
+ * Détermine le type de page sur laquelle l'utilisateur navigue (compatible URLs propres Vercel).
+ */
+function getPageType() {
+  const path = window.location.pathname.toLowerCase();
+  const isLoginPage = path.includes('login');
+  const isSignupPage = path.includes('signup');
+  const isIndexPage = !isLoginPage && !isSignupPage;
+  return { isLoginPage, isSignupPage, isIndexPage };
+}
+
+/**
  * Redirige l'utilisateur s'il n'est pas autorisé sur la page courante.
  * @param {object} session Session actuelle Supabase.
  */
 function handlePageAccess(session) {
-  const currentPath = window.location.pathname;
-  const isIndexPage = currentPath.endsWith('index.html') || currentPath === '/' || currentPath.endsWith('/');
-  const isLoginPage = currentPath.endsWith('login.html');
-  const isSignupPage = currentPath.endsWith('signup.html');
+  const { isLoginPage, isSignupPage } = getPageType();
 
   // Si l'utilisateur est connecté et sur login/signup, on le redirige vers l'accueil
   if (session && (isLoginPage || isSignupPage)) {
@@ -190,10 +198,7 @@ function handlePageAccess(session) {
 // --- INITIALISATION GENERALE DE LA SESSION ---
 
 document.addEventListener('DOMContentLoaded', () => {
-  const currentPath = window.location.pathname;
-  const isIndexPage = currentPath.endsWith('index.html') || currentPath === '/' || currentPath.endsWith('/');
-  const isLoginPage = currentPath.endsWith('login.html');
-  const isSignupPage = currentPath.endsWith('signup.html');
+  const { isLoginPage, isSignupPage, isIndexPage } = getPageType();
 
   // Éléments du DOM globaux
   const loadingOverlay = document.getElementById('loading-overlay');
@@ -212,11 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
   supabaseClient.auth.onAuthStateChange(async (event, session) => {
     console.log("Événement d'authentification :", event);
 
-    // Fermeture de l'overlay de chargement dès que l'état initial est connu
-    if (loadingOverlay) {
-      loadingOverlay.classList.add('hidden');
-    }
-
     // Gestion de l'accès aux pages
     handlePageAccess(session);
 
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (navUserEmail) navUserEmail.textContent = user.email;
       if (navVisitor) navVisitor.classList.add('hidden');
 
-      // Si nous sommes sur la page d'accueil/dashboard (index.html)
+      // Si nous sommes sur la page d'accueil/dashboard
       if (isIndexPage) {
         if (visitorContainer) visitorContainer.classList.add('hidden');
         if (studentContainer) studentContainer.classList.remove('hidden');
@@ -244,9 +244,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (dbError) {
             console.warn("Impossible de récupérer les infos de la table 'users' :", dbError);
-            // Fallback s'il y a un souci (ex: ligne non créée à cause d'une erreur d'insertion précédente)
-            if (userYearBadge) userYearBadge.textContent = "Année non spécifiée";
-            if (userSubBadge) userSubBadge.textContent = "Abonnement standard";
+
+            // Tentative de récupération des métadonnées stockées dans Auth (fallback robuste)
+            const fallbackYear = user.user_metadata?.annee_academique || "1ère année INSPEM";
+            const fallbackSub = user.user_metadata?.statut_abonnement || "Gratuit";
+
+            if (userYearBadge) userYearBadge.textContent = fallbackYear;
+            if (userSubBadge) userSubBadge.textContent = fallbackSub;
+
+            renderCourses(fallbackYear);
           } else if (userData) {
             // Mise à jour de l'interface avec les données de la table 'users'
             const academicYear = userData.annee_academique || "1ère année INSPEM";
@@ -272,6 +278,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (studentContainer) studentContainer.classList.add('hidden');
       }
     }
+
+    // Masquage de l'overlay de chargement une fois l'affichage complètement résolu
+    if (loadingOverlay) {
+      loadingOverlay.classList.add('hidden');
+    }
   });
 
   // --- GESTION DU FORMULAIRE D'INSCRIPTION (signup.html) ---
@@ -291,10 +302,16 @@ document.addEventListener('DOMContentLoaded', () => {
         setButtonLoading(submitBtn, true, originalBtnText);
 
         try {
-          // 1. Inscription dans Supabase Auth
+          // 1. Inscription dans Supabase Auth (avec métadonnées pour parer aux soucis de RLS)
           const { data: authData, error: authError } = await supabaseClient.auth.signUp({
             email: email,
-            password: password
+            password: password,
+            options: {
+              data: {
+                annee_academique: academicYear,
+                statut_abonnement: 'Gratuit'
+              }
+            }
           });
 
           if (authError) {
@@ -306,23 +323,19 @@ document.addEventListener('DOMContentLoaded', () => {
           const authUser = authData?.user;
 
           if (authUser) {
-            // 2. Création automatique de la ligne correspondante dans la table 'users'
+            // 2. Création ou mise à jour (upsert) automatique du profil de la table 'users'
             const { error: dbError } = await supabaseClient
               .from('users')
-              .insert([
-                {
-                  id: authUser.id,
-                  email: authUser.email,
-                  annee_academique: academicYear,
-                  statut_abonnement: 'Gratuit' // Valeur par défaut
-                }
-              ]);
+              .upsert({
+                id: authUser.id,
+                email: authUser.email,
+                annee_academique: academicYear,
+                statut_abonnement: 'Gratuit'
+              });
 
             if (dbError) {
-              console.error("Erreur lors de l'insertion dans la table 'users' :", dbError);
-              showAlert(`Inscription Auth réussie, mais échec de création du profil : ${dbError.message}`, 'error');
-              setButtonLoading(submitBtn, false, originalBtnText);
-              return;
+              console.warn("Échec d'upsert dans la table 'users' (possible restriction RLS) :", dbError);
+              // On ne bloque pas si l'utilisateur a pu s'inscrire, car le fallback par métadonnées prendra le relais
             }
 
             // Gestion de la confirmation d'email (si configurée dans Supabase)
@@ -341,8 +354,9 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error("Erreur inattendue :", err);
           showAlert(`Une erreur inattendue est survenue : ${err.message}`, 'error');
         } finally {
-          if (document.getElementById('btn-submit') && !document.getElementById('btn-submit').disabled) {
-            setButtonLoading(submitBtn, false, originalBtnText);
+          const btn = document.getElementById('btn-submit');
+          if (btn && !btn.disabled) {
+            setButtonLoading(btn, false, originalBtnText);
           }
         }
       });
