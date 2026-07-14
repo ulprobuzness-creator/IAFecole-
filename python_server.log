@@ -1,6 +1,0 @@
-127.0.0.1 - - [13/Jul/2026 17:50:49] "HEAD /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [13/Jul/2026 17:51:24] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [13/Jul/2026 17:51:24] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [13/Jul/2026 17:51:24] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [13/Jul/2026 17:51:25] "GET /signup.html HTTP/1.1" 200 -
-127.0.0.1 - - [13/Jul/2026 17:51:29] "GET /login.html HTTP/1.1" 200 -
