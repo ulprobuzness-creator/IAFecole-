@@ -15,6 +15,7 @@ if (typeof supabase === 'undefined') {
 }
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+window.supabaseClient = supabaseClient;
 
 // Base de données des cours par année académique pour un rendu dynamique élégant
 const COURSES_DATABASE = {

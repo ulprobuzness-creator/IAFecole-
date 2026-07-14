@@ -40,11 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Déterminer le client Supabase actif avec fallback robuste sur window
+  const activeClient = window.supabaseClient || (typeof supabaseClient !== 'undefined' ? supabaseClient : null);
+
   // Gérer la déconnexion via le bouton de dropdown profil
-  if (headerLogoutBtn) {
+  if (headerLogoutBtn && activeClient) {
     headerLogoutBtn.addEventListener('click', async () => {
       try {
-        const { error } = await supabaseClient.auth.signOut();
+        const { error } = await activeClient.auth.signOut();
         if (error) {
           console.error("Erreur déconnexion header :", error.message);
         } else {
@@ -77,11 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
    * @param {string} userId L'identifiant de l'utilisateur connecté.
    */
   async function updateDownloadsCounter(userId) {
-    if (!headerDownloadsCounter) return;
+    if (!headerDownloadsCounter || !activeClient) return;
 
     try {
       // Tenter de compter les téléchargements de l'utilisateur
-      const { count, error } = await supabaseClient
+      const { count, error } = await activeClient
         .from('downloads')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId);
@@ -111,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * @param {object} user L'utilisateur connecté de Supabase Auth.
    */
   async function updateProfileAvatar(user) {
-    if (!headerAvatarBtn || !headerProfileEmail) return;
+    if (!headerAvatarBtn || !headerProfileEmail || !activeClient) return;
 
     headerProfileEmail.textContent = user.email;
 
@@ -121,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       // Tenter de récupérer les informations complémentaires de l'utilisateur depuis la table 'users'
-      const { data: userData, error: dbError } = await supabaseClient
+      const { data: userData, error: dbError } = await activeClient
         .from('users')
         .select('*')
         .eq('id', user.id)
@@ -153,8 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Écoute de l'état d'authentification pour adapter dynamiquement l'en-tête
-  if (typeof supabaseClient !== 'undefined') {
-    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  if (activeClient) {
+    activeClient.auth.onAuthStateChange(async (event, session) => {
       if (session) {
         const user = session.user;
 
