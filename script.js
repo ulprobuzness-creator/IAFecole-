@@ -202,15 +202,107 @@ document.addEventListener('DOMContentLoaded', () => {
   const navUserEmail = document.getElementById('nav-user-email');
   const btnLogoutNav = document.getElementById('btn-logout-nav');
 
+  // Éléments du menu dropdown
+  const menuToggleBtn = document.getElementById('menu-toggle-btn');
+  const menuDropdownContent = document.getElementById('menu-dropdown-content');
+  const menuLinkDashboard = document.getElementById('menu-link-dashboard');
+  const menuUserInfo = document.getElementById('menu-user-info');
+  const menuUserEmailSpan = document.getElementById('menu-user-email');
+  const menuLinkLogin = document.getElementById('menu-link-login');
+  const menuLinkSignup = document.getElementById('menu-link-signup');
+  const menuBtnLogout = document.getElementById('menu-btn-logout');
+
+  const menuBtnYear1 = document.getElementById('menu-btn-year1');
+  const menuBtnYear2 = document.getElementById('menu-btn-year2');
+  const menuBtnYear3 = document.getElementById('menu-btn-year3');
+
   // Éléments du DOM d'index.html
   const visitorContainer = document.getElementById('visitor-container');
   const studentContainer = document.getElementById('student-container');
   const userYearBadge = document.getElementById('user-year-badge');
   const userSubBadge = document.getElementById('user-sub-badge');
 
+  // Variables globales de session courante
+  let currentSession = null;
+
+  // Gestionnaire de clic pour afficher/masquer le menu dropdown
+  if (menuToggleBtn && menuDropdownContent) {
+    menuToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuDropdownContent.classList.toggle('hidden');
+    });
+  }
+
+  // Fermer le menu si on clique en dehors
+  document.addEventListener('click', (e) => {
+    if (menuDropdownContent && !menuDropdownContent.classList.contains('hidden')) {
+      if (!menuDropdownContent.contains(e.target) && e.target !== menuToggleBtn && !menuToggleBtn.contains(e.target)) {
+        menuDropdownContent.classList.add('hidden');
+      }
+    }
+  });
+
+  // Fermer le menu sur touche Échap
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuDropdownContent && !menuDropdownContent.classList.contains('hidden')) {
+      menuDropdownContent.classList.add('hidden');
+    }
+  });
+
+  // Fonction pour charger et afficher dynamiquement des cours à la demande
+  function handleYearSelection(yearName) {
+    if (menuDropdownContent) {
+      menuDropdownContent.classList.add('hidden');
+    }
+
+    if (!currentSession) {
+      showAlert("Veuillez vous connecter pour accéder à l'espace de cours de la " + yearName + ".", "error");
+      // Rediriger vers la page d'accueil pour que l'utilisateur voie le message d'alerte s'il n'y est pas
+      if (!isIndexPage) {
+        localStorage.setItem('redirect_alert_message', "Veuillez vous connecter pour accéder aux cours de la " + yearName + ".");
+        localStorage.setItem('redirect_alert_type', "error");
+        window.location.href = 'index.html';
+      }
+      return;
+    }
+
+    if (isIndexPage) {
+      // Mettre à jour l'affichage de l'année académique de manière temporaire/active
+      if (userYearBadge) {
+        userYearBadge.textContent = yearName;
+      }
+      // Rendu dynamique des cours correspondants
+      renderCourses(yearName);
+      // Scroll fluide vers le container étudiant/les cours
+      const coursesSection = document.getElementById('student-container');
+      if (coursesSection) {
+        coursesSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Stocker l'année sélectionnée pour le rendu après redirection vers index.html
+      localStorage.setItem('selected_academic_year', yearName);
+      window.location.href = 'index.html';
+    }
+  }
+
+  // Événements pour les boutons d'année du menu dropdown
+  if (menuBtnYear1) menuBtnYear1.addEventListener('click', () => handleYearSelection('1ère année INSPEM'));
+  if (menuBtnYear2) menuBtnYear2.addEventListener('click', () => handleYearSelection('2ème année INSPEM'));
+  if (menuBtnYear3) menuBtnYear3.addEventListener('click', () => handleYearSelection('3ème année INSPEM'));
+
+  // S'il y avait un message d'alerte stocké en localStorage après redirection
+  const storedAlert = localStorage.getItem('redirect_alert_message');
+  const storedAlertType = localStorage.getItem('redirect_alert_type');
+  if (storedAlert) {
+    showAlert(storedAlert, storedAlertType || 'error');
+    localStorage.removeItem('redirect_alert_message');
+    localStorage.removeItem('redirect_alert_type');
+  }
+
   // Écoute de l'état d'authentification Supabase (Maintien de session après refresh)
   supabaseClient.auth.onAuthStateChange(async (event, session) => {
     console.log("Événement d'authentification :", event);
+    currentSession = session;
 
     // Fermeture de l'overlay de chargement dès que l'état initial est connu
     if (loadingOverlay) {
@@ -229,6 +321,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (navUserEmail) navUserEmail.textContent = user.email;
       if (navVisitor) navVisitor.classList.add('hidden');
 
+      // Mettre à jour les éléments visibles du menu Dropdown
+      if (menuLinkDashboard) menuLinkDashboard.classList.remove('hidden');
+      if (menuUserInfo) menuUserInfo.classList.remove('hidden');
+      if (menuUserEmailSpan) menuUserEmailSpan.textContent = user.email;
+      if (menuLinkLogin) menuLinkLogin.classList.add('hidden');
+      if (menuLinkSignup) menuLinkSignup.classList.add('hidden');
+      if (menuBtnLogout) menuBtnLogout.classList.remove('hidden');
+
       // Si nous sommes sur la page d'accueil/dashboard (index.html)
       if (isIndexPage) {
         if (visitorContainer) visitorContainer.classList.add('hidden');
@@ -242,22 +342,32 @@ document.addEventListener('DOMContentLoaded', () => {
             .eq('id', user.id)
             .single();
 
+          let finalYear = "1ère année INSPEM";
+          let finalSub = "Gratuit";
+
           if (dbError) {
             console.warn("Impossible de récupérer les infos de la table 'users' :", dbError);
-            // Fallback s'il y a un souci (ex: ligne non créée à cause d'une erreur d'insertion précédente)
             if (userYearBadge) userYearBadge.textContent = "Année non spécifiée";
             if (userSubBadge) userSubBadge.textContent = "Abonnement standard";
           } else if (userData) {
-            // Mise à jour de l'interface avec les données de la table 'users'
-            const academicYear = userData.annee_academique || "1ère année INSPEM";
-            const subscriptionStatus = userData.statut_abonnement || "Gratuit";
+            finalYear = userData.annee_academique || "1ère année INSPEM";
+            finalSub = userData.statut_abonnement || "Gratuit";
 
-            if (userYearBadge) userYearBadge.textContent = academicYear;
-            if (userSubBadge) userSubBadge.textContent = subscriptionStatus;
-
-            // Rendu dynamique des cours correspondants
-            renderCourses(academicYear);
+            if (userYearBadge) userYearBadge.textContent = finalYear;
+            if (userSubBadge) userSubBadge.textContent = finalSub;
           }
+
+          // Vérifier s'il y a une année sélectionnée depuis le menu sur une autre page
+          const storedYear = localStorage.getItem('selected_academic_year');
+          if (storedYear) {
+            finalYear = storedYear;
+            localStorage.removeItem('selected_academic_year');
+            if (userYearBadge) userYearBadge.textContent = finalYear;
+          }
+
+          // Rendu dynamique des cours correspondants
+          renderCourses(finalYear);
+
         } catch (err) {
           console.error("Erreur inattendue lors de la récupération utilisateur :", err);
         }
@@ -266,6 +376,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // --- UTILISATEUR NON CONNECTÉ ---
       if (navStudent) navStudent.classList.add('hidden');
       if (navVisitor) navVisitor.classList.remove('hidden');
+
+      // Mettre à jour les éléments visibles du menu Dropdown
+      if (menuLinkDashboard) menuLinkDashboard.classList.add('hidden');
+      if (menuUserInfo) menuUserInfo.classList.add('hidden');
+      if (menuLinkLogin) menuLinkLogin.classList.remove('hidden');
+      if (menuLinkSignup) menuLinkSignup.classList.remove('hidden');
+      if (menuBtnLogout) menuBtnLogout.classList.add('hidden');
 
       if (isIndexPage) {
         if (visitorContainer) visitorContainer.classList.remove('hidden');
@@ -393,19 +510,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- GESTION DE LA DECONNEXION ---
-  if (btnLogoutNav) {
-    btnLogoutNav.addEventListener('click', async () => {
-      try {
-        const { error } = await supabaseClient.auth.signOut();
-        if (error) {
-          console.error("Erreur lors de la déconnexion :", error);
-          showAlert(`Erreur lors de la déconnexion : ${error.message}`, 'error');
-        } else {
-          window.location.href = 'index.html';
-        }
-      } catch (err) {
-        console.error("Erreur inattendue de déconnexion :", err);
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) {
+        console.error("Erreur lors de la déconnexion :", error);
+        showAlert(`Erreur lors de la déconnexion : ${error.message}`, 'error');
+      } else {
+        window.location.href = 'index.html';
       }
-    });
+    } catch (err) {
+      console.error("Erreur inattendue de déconnexion :", err);
+    }
+  };
+
+  if (btnLogoutNav) {
+    btnLogoutNav.addEventListener('click', handleLogout);
+  }
+  if (menuBtnLogout) {
+    menuBtnLogout.addEventListener('click', handleLogout);
   }
 });
