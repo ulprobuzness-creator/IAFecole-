@@ -24,18 +24,38 @@
         <span>IAFECOLE</span>
       </a>
 
-      <!-- Menu Visiteur (Masqué si connecté) -->
-      <ul id="nav-visitor" class="nav-menu hidden">
-        <li><a href="index.html" class="nav-link">Accueil</a></li>
-        <li><a href="login.html" class="nav-link">Se connecter</a></li>
-        <li><a href="signup.html" class="btn btn-primary">S'inscrire</a></li>
-      </ul>
+      <!-- Zone d'actions de navigation (Tarifs, Contact, Téléchargements, Profil) -->
+      <div class="nav-actions-wrapper">
+        <a href="tarifs.html" class="nav-action-link">Tarifs</a>
+        <a href="contact.html" class="nav-action-link">Contact</a>
 
-      <!-- Menu Étudiant Connecté (Masqué si non connecté) -->
-      <ul id="nav-student" class="nav-menu hidden">
-        <li><span class="nav-link" id="nav-user-email" style="font-weight: 600;"></span></li>
-        <li><button id="btn-logout-nav" class="btn btn-danger">Déconnexion</button></li>
-      </ul>
+        <!-- Compteur de téléchargements restants (masqué par défaut) -->
+        <span id="header-downloads-counter" class="downloads-counter-badge hidden">5/5 téléchargements</span>
+
+        <!-- Menu d'authentification pour visiteur (masqué par défaut) -->
+        <div id="nav-visitor-auth" class="nav-visitor-auth hidden">
+          <a href="login.html" class="nav-action-link nav-link-login">Se connecter</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">S'inscrire</a>
+        </div>
+
+        <!-- Avatar et Dropdown Profil (masqué par défaut) -->
+        <div id="nav-profile-wrapper" class="profile-dropdown-wrapper hidden">
+          <button id="header-avatar-btn" class="avatar-btn" title="Mon compte">--</button>
+          <div id="header-profile-dropdown" class="profile-dropdown-content hidden">
+            <div class="profile-dropdown-user">
+              <span class="user-label">Étudiant</span>
+              <span id="header-profile-email" class="user-email">...</span>
+            </div>
+            <div class="profile-dropdown-divider"></div>
+            <a href="index.html#student-container" class="profile-dropdown-item">Mon compte</a>
+            <button id="header-logout-btn" class="profile-dropdown-item btn-logout-item">Déconnexion</button>
+            <div class="profile-dropdown-divider"></div>
+            <div class="profile-dropdown-footer">
+              <a href="confidentialite.html" class="privacy-link">Confidentialité</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Bouton MENU et son dropdown -->
       <div class="menu-dropdown-wrapper">
@@ -70,6 +90,26 @@
 
   <!-- Section de contenu principale -->
   <main>
+    <!-- Section de bienvenue chaleureuse -->
+    <section id="welcome-banner" class="welcome-banner hidden">
+      <div class="welcome-content">
+        <div class="welcome-header">
+          <span class="welcome-badge">✨ Nouveau sur IAFECOLE</span>
+          <button id="welcome-close-btn" class="welcome-close-btn" title="Masquer ce message">×</button>
+        </div>
+        <div class="welcome-body">
+          <h3>Bienvenue sur IAFECOLE ! 👋</h3>
+          <p class="welcome-mission">
+            Notre mission est d'accompagner chaque étudiant de l'<strong>INSPEM</strong> dans sa réussite académique en facilitant l'accès direct et structuré aux documents de cours, exercices et ressources pédagogiques, organisés par année d'études et par matière.
+          </p>
+          <div class="welcome-divider"></div>
+          <p class="welcome-encouragement">
+            Chaque heure passée à étudier, chaque effort fourni et chaque obstacle surmonté vous rapprochent de vos rêves de futurs ingénieurs. Nous tenons à saluer chaleureusement votre persévérance et votre détermination. Croyez en vous, donnez le meilleur de vous-même et sachez que toute l'équipe d'IAFECOLE vous souhaite une réussite exceptionnelle dans vos études ! 🚀
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- Message d'alerte pour les retours utilisateurs -->
     <div id="alert-box" class="alert hidden"></div>
 
@@ -112,6 +152,9 @@
 
   <!-- Script principal pour gérer la logique et l'état Supabase Auth -->
   <script src="script.js"></script>
+  <!-- Scripts modulaires additionnels -->
+  <script src="welcome.js"></script>
+  <script src="header.js"></script>
 
 </body>
 </html>

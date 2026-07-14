@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscription - IAFECOLE</title>
+  <title>Contact - IAFECOLE</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chargement du client Supabase depuis le CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <!-- Barre de navigation -->
+  <!-- Barre de navigation dynamique -->
   <header>
     <div class="nav-container">
       <a href="index.html" class="logo">
@@ -19,7 +19,7 @@
       <!-- Zone d'actions de navigation (Tarifs, Contact, Téléchargements, Profil) -->
       <div class="nav-actions-wrapper">
         <a href="tarifs.html" class="nav-action-link">Tarifs</a>
-        <a href="contact.html" class="nav-action-link">Contact</a>
+        <a href="contact.html" class="nav-action-link active">Contact</a>
 
         <!-- Compteur de téléchargements restants (masqué par défaut) -->
         <span id="header-downloads-counter" class="downloads-counter-badge hidden">5/5 téléchargements</span>
@@ -80,50 +80,51 @@
     </div>
   </header>
 
-  <!-- Conteneur d'authentification -->
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      <h2>Inscription</h2>
-      <p class="auth-subtitle">Créez votre compte étudiant IAFECOLE</p>
+  <main class="contact-container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2>Contactez-nous 📧</h2>
+        <p class="contact-desc">
+          Une suggestion ? Une question sur vos cours à l'INSPEM ou sur nos formules ? Notre équipe est là pour vous accompagner au quotidien.
+        </p>
 
-      <!-- Message d'alerte pour les retours utilisateurs -->
-      <div id="alert-box" class="alert hidden"></div>
+        <div class="contact-methods">
+          <div class="contact-method-card">
+            <h4>💬 WhatsApp</h4>
+            <p>Discutez en direct avec un conseiller pédagogique.</p>
+            <a href="https://wa.me/33600000000" target="_blank" class="btn btn-outline btn-sm">Nous écrire sur WhatsApp</a>
+          </div>
 
-      <form id="signup-form">
-        <div class="form-group">
-          <label for="signup-email" class="form-label">Adresse Email</label>
-          <input type="email" id="signup-email" class="form-input" placeholder="étudiant@inspem.fr" required>
+          <div class="contact-method-card">
+            <h4>✉️ Email de support</h4>
+            <p>Envoyez-nous un email, nous vous répondrons sous 24h.</p>
+            <a href="mailto:support@iafecole.fr" class="contact-email">support@iafecole.fr</a>
+          </div>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="signup-password" class="form-label">Mot de passe</label>
-          <input type="password" id="signup-password" class="form-input" placeholder="Minimum 6 caractères" minlength="6" required>
-        </div>
-
-        <div class="form-group">
-          <label for="signup-year" class="form-label">Année Académique</label>
-          <select id="signup-year" class="form-select" required>
-            <option value="" disabled selected>Choisissez votre année académique</option>
-            <option value="1ère année INSPEM">1ère année INSPEM</option>
-            <option value="2ème année INSPEM">2ème année INSPEM</option>
-            <option value="3ème année INSPEM">3ème année INSPEM</option>
-          </select>
-        </div>
-
-        <button type="submit" id="btn-submit" class="btn btn-primary auth-btn">
-          S'inscrire
-        </button>
-      </form>
-
-      <div class="auth-footer">
-        Déjà inscrit ? <a href="login.html">Se connecter</a>
+      <div class="contact-form-card">
+        <h3>Formulaire de contact</h3>
+        <form id="contact-form" onsubmit="event.preventDefault(); alert('Votre message a bien été envoyé ! Nous vous répondrons dans les plus brefs délais.'); this.reset();">
+          <div class="form-group">
+            <label for="contact-name" class="form-label">Nom Complet</label>
+            <input type="text" id="contact-name" class="form-input" placeholder="Jean Dupont" required>
+          </div>
+          <div class="form-group">
+            <label for="contact-email" class="form-label">Adresse Email</label>
+            <input type="email" id="contact-email" class="form-input" placeholder="etudiant@inspem.fr" required>
+          </div>
+          <div class="form-group">
+            <label for="contact-message" class="form-label">Votre message</label>
+            <textarea id="contact-message" class="form-input" rows="5" placeholder="Bonjour, je souhaiterais en savoir plus sur..." style="resize: vertical; font-family: inherit;" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Envoyer le message</button>
+        </form>
       </div>
     </div>
-  </div>
+  </main>
 
-  <!-- Script principal pour gérer l'authentification -->
   <script src="script.js"></script>
-  <!-- Script modulaire pour l'en-tête et le profil -->
   <script src="header.js"></script>
 </body>
 </html>
