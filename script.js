@@ -2,12 +2,13 @@
  * script.js - Gestion de l'authentification et de la base de données Supabase pour IAFECOLE.
  *
  * Ce fichier gère l'initialisation du client Supabase, l'inscription, la connexion,
- * la déconnexion, ainsi que le contrôle d'accès aux pages et le rendu dynamique des cours.
+ * la déconnexion, ainsi que le contrôle d'accès aux pages, la gestion des sessions
+ * persistantes, et le rendu dynamique des cours selon l'année académique.
  */
 
 // Configuration de Supabase
 const SUPABASE_URL = "https://iirnqybvolpjlmfymfvb.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_cb9sZ5aPun1HqWq_6zjc4Q_zPseLR80";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlpcm5xeWJ2b2xwamxtZnltZnZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDUyNzksImV4cCI6MjA5OTM4MTI3OX0.xJVvSLT11HGUEYz71w01pAkCFDhrMP923833M9ov2H4";
 
 // Initialisation du client Supabase
 if (typeof supabase === 'undefined') {
@@ -16,7 +17,7 @@ if (typeof supabase === 'undefined') {
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Base de données des cours par année académique pour un rendu dynamique élégant
+// Base de données locale de cours pour l'affichage dynamique par année académique
 const COURSES_DATABASE = {
   "1ère année INSPEM": [
     {
@@ -83,7 +84,7 @@ const COURSES_DATABASE = {
 // --- FONCTIONS UTILITAIRES ---
 
 /**
- * Affiche un message d'alerte (succès ou erreur) à l'utilisateur.
+ * Affiche un message d'alerte (succès ou erreur) à l'utilisateur dans l'interface.
  * @param {string} message Le texte à afficher.
  * @param {string} type Le type d'alerte ('success' ou 'error').
  */
@@ -95,7 +96,7 @@ function showAlert(message, type = 'error') {
   alertBox.className = `alert alert-${type}`;
   alertBox.style.display = 'block';
 
-  // Défilement automatique vers l'alerte pour une meilleure UX
+  // Défilement automatique vers l'alerte pour une meilleure visibilité
   alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -111,7 +112,7 @@ function hideAlert() {
 }
 
 /**
- * Active ou désactive l'état de chargement d'un bouton.
+ * Active ou désactive l'état de chargement d'un bouton pour éviter les doubles clics.
  * @param {HTMLButtonElement} button Element bouton à modifier.
  * @param {boolean} isLoading État de chargement.
  * @param {string} originalText Texte original du bouton à restaurer.
@@ -139,7 +140,7 @@ function renderCourses(academicYear) {
 
   coursesListContainer.innerHTML = '';
 
-  // Récupération des cours correspondant à l'année
+  // Récupération des cours correspondant à l'année académique
   const courses = COURSES_DATABASE[academicYear] || [];
 
   if (courses.length === 0) {
@@ -169,73 +170,73 @@ function renderCourses(academicYear) {
   });
 }
 
-// --- SÉCURITÉ & SESSION ---
+// --- SÉCURITÉ & ACCÈS AUX PAGES ---
 
 /**
- * Redirige l'utilisateur s'il n'est pas autorisé sur la page courante.
+ * Détermine le type de page sur laquelle l'utilisateur navigue actuellement.
+ */
+function getPageType() {
+  const path = window.location.pathname.toLowerCase();
+  const isLoginPage = path.includes('login');
+  const isSignupPage = path.includes('signup');
+  const isIndexPage = !isLoginPage && !isSignupPage;
+  return { isLoginPage, isSignupPage, isIndexPage };
+}
+
+/**
+ * Redirige l'utilisateur s'il tente d'accéder aux pages d'auth alors qu'il est connecté.
  * @param {object} session Session actuelle Supabase.
  */
 function handlePageAccess(session) {
-  const currentPath = window.location.pathname;
-  const isIndexPage = currentPath.endsWith('index.html') || currentPath === '/' || currentPath.endsWith('/');
-  const isLoginPage = currentPath.endsWith('login.html');
-  const isSignupPage = currentPath.endsWith('signup.html');
+  const { isLoginPage, isSignupPage } = getPageType();
 
-  // Si l'utilisateur est connecté et sur login/signup, on le redirige vers l'accueil
+  // Si connecté, redirige de login ou signup vers l'accueil index.html
   if (session && (isLoginPage || isSignupPage)) {
     window.location.href = 'index.html';
   }
 }
 
-// --- INITIALISATION GENERALE DE LA SESSION ---
+// --- GESTION DE LA SESSION ET INITIALISATION ---
 
 document.addEventListener('DOMContentLoaded', () => {
-  const currentPath = window.location.pathname;
-  const isIndexPage = currentPath.endsWith('index.html') || currentPath === '/' || currentPath.endsWith('/');
-  const isLoginPage = currentPath.endsWith('login.html');
-  const isSignupPage = currentPath.endsWith('signup.html');
+  const { isLoginPage, isSignupPage, isIndexPage } = getPageType();
 
-  // Éléments du DOM globaux
+  // Éléments DOM globaux
   const loadingOverlay = document.getElementById('loading-overlay');
   const navVisitor = document.getElementById('nav-visitor');
   const navStudent = document.getElementById('nav-student');
   const navUserEmail = document.getElementById('nav-user-email');
   const btnLogoutNav = document.getElementById('btn-logout-nav');
 
-  // Éléments du DOM d'index.html
+  // Éléments DOM d'index.html (Espace étudiant & Espace Visiteur)
   const visitorContainer = document.getElementById('visitor-container');
   const studentContainer = document.getElementById('student-container');
   const userYearBadge = document.getElementById('user-year-badge');
   const userSubBadge = document.getElementById('user-sub-badge');
 
-  // Écoute de l'état d'authentification Supabase (Maintien de session après refresh)
+  // Écoute de l'état d'authentification de Supabase (Maintien de session après rafraîchissement)
   supabaseClient.auth.onAuthStateChange(async (event, session) => {
-    console.log("Événement d'authentification :", event);
+    console.log("Événement d'authentification Supabase :", event);
 
-    // Fermeture de l'overlay de chargement dès que l'état initial est connu
-    if (loadingOverlay) {
-      loadingOverlay.classList.add('hidden');
-    }
-
-    // Gestion de l'accès aux pages
+    // Gérer les accès aux pages d'authentification en fonction de la session
     handlePageAccess(session);
 
     if (session) {
-      // --- UTILISATEUR CONNECTÉ ---
+      // --- ÉTUDIANT CONNECTÉ ---
       const user = session.user;
 
-      // Affichage du menu étudiant connecté
+      // Afficher le menu de l'étudiant, masquer celui des visiteurs
       if (navStudent) navStudent.classList.remove('hidden');
       if (navUserEmail) navUserEmail.textContent = user.email;
       if (navVisitor) navVisitor.classList.add('hidden');
 
-      // Si nous sommes sur la page d'accueil/dashboard (index.html)
+      // Si nous sommes sur l'accueil (index.html)
       if (isIndexPage) {
         if (visitorContainer) visitorContainer.classList.add('hidden');
         if (studentContainer) studentContainer.classList.remove('hidden');
 
-        // Récupération des informations complémentaires depuis la table 'users'
         try {
+          // Tentative de récupération des métadonnées personnalisées depuis la table 'users'
           const { data: userData, error: dbError } = await supabaseClient
             .from('users')
             .select('annee_academique, statut_abonnement')
@@ -243,27 +244,33 @@ document.addEventListener('DOMContentLoaded', () => {
             .single();
 
           if (dbError) {
-            console.warn("Impossible de récupérer les infos de la table 'users' :", dbError);
-            // Fallback s'il y a un souci (ex: ligne non créée à cause d'une erreur d'insertion précédente)
-            if (userYearBadge) userYearBadge.textContent = "Année non spécifiée";
-            if (userSubBadge) userSubBadge.textContent = "Abonnement standard";
+            console.warn("Récupération depuis la table 'users' échouée (politique RLS active ou table vide). Utilisation du fallback métadonnées :", dbError);
+
+            // Fallback robuste : récupération des métadonnées directement stockées lors de l'auth.signUp
+            const fallbackYear = user.user_metadata?.annee_academique || "1ère année INSPEM";
+            const fallbackSub = user.user_metadata?.statut_abonnement || "Gratuit";
+
+            if (userYearBadge) userYearBadge.textContent = fallbackYear;
+            if (userSubBadge) userSubBadge.textContent = fallbackSub;
+
+            renderCourses(fallbackYear);
           } else if (userData) {
-            // Mise à jour de l'interface avec les données de la table 'users'
+            // Mise à jour de l'UI avec les valeurs de la base de données
             const academicYear = userData.annee_academique || "1ère année INSPEM";
             const subscriptionStatus = userData.statut_abonnement || "Gratuit";
 
             if (userYearBadge) userYearBadge.textContent = academicYear;
             if (userSubBadge) userSubBadge.textContent = subscriptionStatus;
 
-            // Rendu dynamique des cours correspondants
+            // Rendu dynamique des cours
             renderCourses(academicYear);
           }
         } catch (err) {
-          console.error("Erreur inattendue lors de la récupération utilisateur :", err);
+          console.error("Erreur système lors du chargement des données utilisateur :", err);
         }
       }
     } else {
-      // --- UTILISATEUR NON CONNECTÉ ---
+      // --- UTILISATEUR VISITEUR ---
       if (navStudent) navStudent.classList.add('hidden');
       if (navVisitor) navVisitor.classList.remove('hidden');
 
@@ -272,9 +279,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (studentContainer) studentContainer.classList.add('hidden');
       }
     }
+
+    // Masquer le chargement initial une fois l'état de la session résolu
+    if (loadingOverlay) {
+      loadingOverlay.classList.add('hidden');
+    }
   });
 
-  // --- GESTION DU FORMULAIRE D'INSCRIPTION (signup.html) ---
+  // --- LOGIQUE DU FORMULAIRE D'INSCRIPTION (signup.html) ---
   if (isSignupPage) {
     const signupForm = document.getElementById('signup-form');
     if (signupForm) {
@@ -291,14 +303,21 @@ document.addEventListener('DOMContentLoaded', () => {
         setButtonLoading(submitBtn, true, originalBtnText);
 
         try {
-          // 1. Inscription dans Supabase Auth
+          // 1. Inscription du compte utilisateur dans Supabase Auth
+          // Nous incluons l'année académique dans user_metadata pour une double sécurité en cas d'erreurs RLS sur la table 'users'.
           const { data: authData, error: authError } = await supabaseClient.auth.signUp({
             email: email,
-            password: password
+            password: password,
+            options: {
+              data: {
+                annee_academique: academicYear,
+                statut_abonnement: 'Gratuit'
+              }
+            }
           });
 
           if (authError) {
-            showAlert(`Erreur d'inscription : ${authError.message}`, 'error');
+            showAlert(`Erreur d'inscription Supabase Auth : ${authError.message}`, 'error');
             setButtonLoading(submitBtn, false, originalBtnText);
             return;
           }
@@ -306,50 +325,58 @@ document.addEventListener('DOMContentLoaded', () => {
           const authUser = authData?.user;
 
           if (authUser) {
-            // 2. Création automatique de la ligne correspondante dans la table 'users'
+            console.log("Utilisateur inscrit avec succès dans Supabase Auth :", authUser.id);
+
+            // 2. Création de la ligne correspondante dans la table 'users'
             const { error: dbError } = await supabaseClient
               .from('users')
-              .insert([
-                {
-                  id: authUser.id,
-                  email: authUser.email,
-                  annee_academique: academicYear,
-                  statut_abonnement: 'Gratuit' // Valeur par défaut
-                }
-              ]);
+              .upsert({
+                id: authUser.id,
+                email: authUser.email,
+                annee_academique: academicYear,
+                statut_abonnement: 'Gratuit'
+              });
 
             if (dbError) {
-              console.error("Erreur lors de l'insertion dans la table 'users' :", dbError);
-              showAlert(`Inscription Auth réussie, mais échec de création du profil : ${dbError.message}`, 'error');
+              console.error("Erreur lors de l'enregistrement dans la table 'users' :", dbError);
+
+              // Affichage d'un avertissement instructif à destination du développeur ou de l'utilisateur
+              showAlert(
+                `Compte créé dans Supabase Auth, mais impossible d'insérer dans la table public.'users' : "${dbError.message}". \n` +
+                `Si l'email de confirmation est activé, la table ne peut être écrite avant validation de l'email, ou vos politiques RLS bloquent l'écriture. \n` +
+                `Vérifiez vos politiques RLS ou utilisez un trigger SQL (ex: on_auth_user_created).`,
+                'error'
+              );
               setButtonLoading(submitBtn, false, originalBtnText);
               return;
             }
 
-            // Gestion de la confirmation d'email (si configurée dans Supabase)
+            // Gestion de l'email de confirmation (si actif sur la console Supabase)
             if (authData.session === null) {
-              showAlert("Inscription réussie ! Un email de confirmation vous a été envoyé. Veuillez le valider pour vous connecter.", "success");
+              showAlert("Inscription réussie ! Un email de confirmation vous a été envoyé. Veuillez le valider pour activer et vous connecter à votre compte.", "success");
               signupForm.reset();
             } else {
-              // Si la confirmation d'email n'est pas requise, la session est ouverte immédiatement
-              showAlert("Inscription réussie ! Redirection en cours...", "success");
+              // Si la validation par email n'est pas requise, on connecte directement l'utilisateur
+              showAlert("Inscription réussie et profil enregistré ! Redirection en cours...", "success");
               setTimeout(() => {
                 window.location.href = 'index.html';
               }, 1500);
             }
           }
         } catch (err) {
-          console.error("Erreur inattendue :", err);
-          showAlert(`Une erreur inattendue est survenue : ${err.message}`, 'error');
+          console.error("Erreur inattendue durant l'inscription :", err);
+          showAlert(`Une erreur système inattendue est survenue : ${err.message}`, 'error');
         } finally {
-          if (document.getElementById('btn-submit') && !document.getElementById('btn-submit').disabled) {
-            setButtonLoading(submitBtn, false, originalBtnText);
+          const btn = document.getElementById('btn-submit');
+          if (btn && !btn.disabled) {
+            setButtonLoading(btn, false, originalBtnText);
           }
         }
       });
     }
   }
 
-  // --- GESTION DU FORMULAIRE DE CONNEXION (login.html) ---
+  // --- LOGIQUE DU FORMULAIRE DE CONNEXION (login.html) ---
   if (isLoginPage) {
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
@@ -365,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setButtonLoading(submitBtn, true, originalBtnText);
 
         try {
-          // Connexion avec email et mot de passe
+          // Connexion de l'utilisateur
           const { data, error } = await supabaseClient.auth.signInWithPassword({
             email: email,
             password: password
@@ -384,27 +411,27 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
           }
         } catch (err) {
-          console.error("Erreur inattendue :", err);
-          showAlert(`Une erreur inattendue est survenue : ${err.message}`, 'error');
+          console.error("Erreur inattendue durant la connexion :", err);
+          showAlert(`Une erreur système inattendue est survenue : ${err.message}`, 'error');
           setButtonLoading(submitBtn, false, originalBtnText);
         }
       });
     }
   }
 
-  // --- GESTION DE LA DECONNEXION ---
+  // --- LOGIQUE DE DECONNEXION ---
   if (btnLogoutNav) {
     btnLogoutNav.addEventListener('click', async () => {
       try {
         const { error } = await supabaseClient.auth.signOut();
         if (error) {
-          console.error("Erreur lors de la déconnexion :", error);
+          console.error("Erreur lors de la déconnexion Supabase Auth :", error);
           showAlert(`Erreur lors de la déconnexion : ${error.message}`, 'error');
         } else {
           window.location.href = 'index.html';
         }
       } catch (err) {
-        console.error("Erreur inattendue de déconnexion :", err);
+        console.error("Erreur inattendue lors de la déconnexion :", err);
       }
     });
   }
