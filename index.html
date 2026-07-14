@@ -36,6 +36,35 @@
         <li><span class="nav-link" id="nav-user-email" style="font-weight: 600;"></span></li>
         <li><button id="btn-logout-nav" class="btn btn-danger">Déconnexion</button></li>
       </ul>
+
+      <!-- Bouton MENU et son dropdown -->
+      <div class="menu-dropdown-wrapper">
+        <button id="menu-toggle-btn" class="btn btn-menu">
+          <span>MENU ☰</span>
+        </button>
+        <div id="menu-dropdown-content" class="dropdown-content hidden">
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Navigation</span>
+            <a href="index.html" class="dropdown-item">Accueil</a>
+            <a href="index.html#student-container" id="menu-link-dashboard" class="dropdown-item hidden">Mon Espace</a>
+          </div>
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Cours INSPEM</span>
+            <button id="menu-btn-year1" class="dropdown-item dropdown-btn">1ère année INSPEM</button>
+            <button id="menu-btn-year2" class="dropdown-item dropdown-btn">2ème année INSPEM</button>
+            <button id="menu-btn-year3" class="dropdown-item dropdown-btn">3ème année INSPEM</button>
+          </div>
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Compte</span>
+            <div id="menu-user-info" class="menu-user-info hidden">
+              <span id="menu-user-email" class="menu-user-email"></span>
+            </div>
+            <a href="login.html" id="menu-link-login" class="dropdown-item">Se connecter</a>
+            <a href="signup.html" id="menu-link-signup" class="dropdown-item">S'inscrire</a>
+            <button id="menu-btn-logout" class="dropdown-item dropdown-btn btn-danger-text hidden">Déconnexion</button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
