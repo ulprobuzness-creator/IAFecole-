@@ -231,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       menuDropdownContent.classList.toggle('hidden');
+      menuToggleBtn.classList.toggle('active');
     });
   }
 
@@ -239,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuDropdownContent && !menuDropdownContent.classList.contains('hidden')) {
       if (!menuDropdownContent.contains(e.target) && e.target !== menuToggleBtn && !menuToggleBtn.contains(e.target)) {
         menuDropdownContent.classList.add('hidden');
+        menuToggleBtn.classList.remove('active');
       }
     }
   });
@@ -247,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menuDropdownContent && !menuDropdownContent.classList.contains('hidden')) {
       menuDropdownContent.classList.add('hidden');
+      menuToggleBtn.classList.remove('active');
     }
   });
 

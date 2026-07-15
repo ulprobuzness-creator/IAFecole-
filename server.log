@@ -1,0 +1,7 @@
+127.0.0.1 - - [15/Jul/2026 23:43:37] "HEAD /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /welcome.js HTTP/1.1" 200 -
+127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /header.js HTTP/1.1" 200 -
+127.0.0.1 - - [15/Jul/2026 23:44:48] "GET /apropos.html HTTP/1.1" 200 -
