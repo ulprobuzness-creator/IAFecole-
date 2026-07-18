@@ -13,7 +13,20 @@
   <header>
     <div class="nav-container">
       <a href="index.html" class="logo">
-        <span>IAFECOLE</span>
+        <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-tarifs)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-tarifs)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-tarifs)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+          <circle cx="12" cy="7" r="1.5" fill="#0ea5e9"/>
+          <circle cx="12" cy="17" r="1.5" fill="#4f46e5"/>
+          <defs>
+            <linearGradient id="logo-grad-tarifs" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4f46e5"/>
+              <stop offset="1" stop-color="#0ea5e9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">IAFECOLE</span>
       </a>
 
       <!-- Zone d'actions de navigation (Tarifs, Contact, Téléchargements, Profil) -->
