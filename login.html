@@ -13,12 +13,54 @@
   <header>
     <div class="nav-container">
       <a href="index.html" class="logo">
-        <span>IAFECOLE</span>
+        <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-login)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-login)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-login)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+          <circle cx="12" cy="7" r="1.5" fill="#0ea5e9"/>
+          <circle cx="12" cy="17" r="1.5" fill="#4f46e5"/>
+          <defs>
+            <linearGradient id="logo-grad-login" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4f46e5"/>
+              <stop offset="1" stop-color="#0ea5e9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">IAFECOLE</span>
       </a>
-      <ul class="nav-menu">
-        <li><a href="index.html" class="nav-link">Accueil</a></li>
-        <li><a href="signup.html" class="btn btn-outline">S'inscrire</a></li>
-      </ul>
+
+      <!-- Zone d'actions de navigation (Tarifs, Contact, Téléchargements, Profil) -->
+      <div class="nav-actions-wrapper">
+        <a href="tarifs.html" class="nav-action-link">Tarifs</a>
+        <a href="contact.html" class="nav-action-link">Contact</a>
+
+        <!-- Compteur de téléchargements restants (masqué par défaut) -->
+        <span id="header-downloads-counter" class="downloads-counter-badge hidden">5/5 téléchargements</span>
+
+        <!-- Menu d'authentification pour visiteur (masqué par défaut) -->
+        <div id="nav-visitor-auth" class="nav-visitor-auth hidden">
+          <a href="login.html" class="nav-action-link nav-link-login">Se connecter</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">S'inscrire</a>
+        </div>
+
+        <!-- Avatar et Dropdown Profil (masqué par défaut) -->
+        <div id="nav-profile-wrapper" class="profile-dropdown-wrapper hidden">
+          <button id="header-avatar-btn" class="avatar-btn" title="Mon compte">--</button>
+          <div id="header-profile-dropdown" class="profile-dropdown-content hidden">
+            <div class="profile-dropdown-user">
+              <span class="user-label">Étudiant</span>
+              <span id="header-profile-email" class="user-email">...</span>
+            </div>
+            <div class="profile-dropdown-divider"></div>
+            <a href="index.html#student-container" class="profile-dropdown-item">Mon compte</a>
+            <button id="header-logout-btn" class="profile-dropdown-item btn-logout-item">Déconnexion</button>
+            <div class="profile-dropdown-divider"></div>
+            <div class="profile-dropdown-footer">
+              <a href="confidentialite.html" class="privacy-link">Confidentialité</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Bouton MENU et son dropdown -->
       <div class="menu-dropdown-wrapper">
@@ -36,6 +78,12 @@
             <button id="menu-btn-year1" class="dropdown-item dropdown-btn">1ère année INSPEM</button>
             <button id="menu-btn-year2" class="dropdown-item dropdown-btn">2ème année INSPEM</button>
             <button id="menu-btn-year3" class="dropdown-item dropdown-btn">3ème année INSPEM</button>
+          </div>
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Info & Support</span>
+            <a href="tarifs.html" class="dropdown-item">Tarifs</a>
+            <a href="contact.html" class="dropdown-item">Nous contacter</a>
+            <a href="apropos.html" class="dropdown-item">À propos</a>
           </div>
           <div class="dropdown-section">
             <span class="dropdown-section-title">Compte</span>
@@ -84,5 +132,7 @@
 
   <!-- Script principal pour gérer l'authentification -->
   <script src="script.js"></script>
+  <!-- Script modulaire pour l'en-tête et le profil -->
+  <script src="header.js"></script>
 </body>
 </html>

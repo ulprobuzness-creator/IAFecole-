@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscription - IAFECOLE</title>
+  <title>Tarifs - IAFECOLE</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chargement du client Supabase depuis le CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <!-- Barre de navigation -->
+  <!-- Barre de navigation dynamique -->
   <header>
     <div class="nav-container">
       <a href="index.html" class="logo">
         <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-tarifs)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-tarifs)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-tarifs)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
           <circle cx="12" cy="7" r="1.5" fill="#0ea5e9"/>
           <circle cx="12" cy="17" r="1.5" fill="#4f46e5"/>
           <defs>
-            <linearGradient id="logo-grad-signup" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+            <linearGradient id="logo-grad-tarifs" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
               <stop stop-color="#4f46e5"/>
               <stop offset="1" stop-color="#0ea5e9"/>
             </linearGradient>
@@ -31,7 +31,7 @@
 
       <!-- Zone d'actions de navigation (Tarifs, Contact, Téléchargements, Profil) -->
       <div class="nav-actions-wrapper">
-        <a href="tarifs.html" class="nav-action-link">Tarifs</a>
+        <a href="tarifs.html" class="nav-action-link active">Tarifs</a>
         <a href="contact.html" class="nav-action-link">Contact</a>
 
         <!-- Compteur de téléchargements restants (masqué par défaut) -->
@@ -99,50 +99,53 @@
     </div>
   </header>
 
-  <!-- Conteneur d'authentification -->
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      <h2>Inscription</h2>
-      <p class="auth-subtitle">Créez votre compte étudiant IAFECOLE</p>
+  <main class="pricing-container">
+    <div class="pricing-header">
+      <h2>Nos formules d'abonnement</h2>
+      <p>Choisissez la formule qui correspond le mieux à vos besoins d'apprentissage à l'INSPEM.</p>
+    </div>
 
-      <!-- Message d'alerte pour les retours utilisateurs -->
-      <div id="alert-box" class="alert hidden"></div>
-
-      <form id="signup-form">
-        <div class="form-group">
-          <label for="signup-email" class="form-label">Adresse Email</label>
-          <input type="email" id="signup-email" class="form-input" placeholder="étudiant@inspem.fr" required>
+    <div class="pricing-grid">
+      <!-- Plan Gratuit -->
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <h3>Formule Découverte</h3>
+          <span class="price">Gratuit</span>
+          <p class="price-desc">Pour commencer sereinement</p>
         </div>
-
-        <div class="form-group">
-          <label for="signup-password" class="form-label">Mot de passe</label>
-          <input type="password" id="signup-password" class="form-input" placeholder="Minimum 6 caractères" minlength="6" required>
+        <ul class="pricing-features">
+          <li>✓ Accès aux cours de votre année académique</li>
+          <li>✓ Consultation en ligne illimitée</li>
+          <li>✓ 5 téléchargements de documents autorisés</li>
+          <li>✗ Support prioritaire par chat/email</li>
+        </ul>
+        <div class="pricing-card-footer">
+          <a href="signup.html" class="btn btn-outline full-width">Commencer gratuitement</a>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="signup-year" class="form-label">Année Académique</label>
-          <select id="signup-year" class="form-select" required>
-            <option value="" disabled selected>Choisissez votre année académique</option>
-            <option value="1ère année INSPEM">1ère année INSPEM</option>
-            <option value="2ème année INSPEM">2ème année INSPEM</option>
-            <option value="3ème année INSPEM">3ème année INSPEM</option>
-          </select>
+      <!-- Plan Premium -->
+      <div class="pricing-card premium">
+        <div class="pricing-badge">Recommandé</div>
+        <div class="pricing-card-header">
+          <h3>Formule Réussite</h3>
+          <span class="price">9.99 € <small>/ mois</small></span>
+          <p class="price-desc">Idéal pour réviser sans aucune limite</p>
         </div>
-
-        <button type="submit" id="btn-submit" class="btn btn-primary auth-btn">
-          S'inscrire
-        </button>
-      </form>
-
-      <div class="auth-footer">
-        Déjà inscrit ? <a href="login.html">Se connecter</a>
+        <ul class="pricing-features">
+          <li>✓ Accès illimité à TOUS les cours INSPEM (1, 2, 3)</li>
+          <li>✓ Téléchargements de PDF illimités</li>
+          <li>✓ Exercices corrigés exclusifs</li>
+          <li>✓ Support prioritaire WhatsApp 7j/7</li>
+        </ul>
+        <div class="pricing-card-footer">
+          <a href="signup.html" class="btn btn-primary full-width">Devenir Premium</a>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <!-- Script principal pour gérer l'authentification -->
   <script src="script.js"></script>
-  <!-- Script modulaire pour l'en-tête et le profil -->
   <script src="header.js"></script>
 </body>
 </html>

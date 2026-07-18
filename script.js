@@ -15,6 +15,7 @@ if (typeof supabase === 'undefined') {
 }
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+window.supabaseClient = supabaseClient;
 
 // Base de données des cours par année académique pour un rendu dynamique élégant
 const COURSES_DATABASE = {
@@ -230,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       menuDropdownContent.classList.toggle('hidden');
+      menuToggleBtn.classList.toggle('active');
     });
   }
 
@@ -238,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuDropdownContent && !menuDropdownContent.classList.contains('hidden')) {
       if (!menuDropdownContent.contains(e.target) && e.target !== menuToggleBtn && !menuToggleBtn.contains(e.target)) {
         menuDropdownContent.classList.add('hidden');
+        menuToggleBtn.classList.remove('active');
       }
     }
   });
@@ -246,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menuDropdownContent && !menuDropdownContent.classList.contains('hidden')) {
       menuDropdownContent.classList.add('hidden');
+      menuToggleBtn.classList.remove('active');
     }
   });
 

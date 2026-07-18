@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscription - IAFECOLE</title>
+  <title>Politique de Confidentialité - IAFECOLE</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chargement du client Supabase depuis le CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <!-- Barre de navigation -->
+  <!-- Barre de navigation dynamique -->
   <header>
     <div class="nav-container">
       <a href="index.html" class="logo">
         <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-privacy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-privacy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-privacy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
           <circle cx="12" cy="7" r="1.5" fill="#0ea5e9"/>
           <circle cx="12" cy="17" r="1.5" fill="#4f46e5"/>
           <defs>
-            <linearGradient id="logo-grad-signup" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+            <linearGradient id="logo-grad-privacy" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
               <stop stop-color="#4f46e5"/>
               <stop offset="1" stop-color="#0ea5e9"/>
             </linearGradient>
@@ -56,7 +56,7 @@
             <button id="header-logout-btn" class="profile-dropdown-item btn-logout-item">Déconnexion</button>
             <div class="profile-dropdown-divider"></div>
             <div class="profile-dropdown-footer">
-              <a href="confidentialite.html" class="privacy-link">Confidentialité</a>
+              <a href="confidentialite.html" class="privacy-link active">Confidentialité</a>
             </div>
           </div>
         </div>
@@ -99,50 +99,45 @@
     </div>
   </header>
 
-  <!-- Conteneur d'authentification -->
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      <h2>Inscription</h2>
-      <p class="auth-subtitle">Créez votre compte étudiant IAFECOLE</p>
+  <main class="privacy-container">
+    <div class="legal-card">
+      <h2>Politique de Confidentialité 🔒</h2>
+      <p class="last-updated">Dernière mise à jour : 14 Juillet 2026</p>
 
-      <!-- Message d'alerte pour les retours utilisateurs -->
-      <div id="alert-box" class="alert hidden"></div>
+      <section class="legal-section">
+        <h3>1. Introduction</h3>
+        <p>
+          Chez <strong>IAFECOLE</strong>, nous accordons une importance primordiale à la protection de vos données personnelles. Cette politique de confidentialité vous informe sur la manière dont nous recueillons, utilisons et sécurisons vos informations lorsque vous utilisez notre plateforme éducative dédiée aux étudiants de l'INSPEM.
+        </p>
+      </section>
 
-      <form id="signup-form">
-        <div class="form-group">
-          <label for="signup-email" class="form-label">Adresse Email</label>
-          <input type="email" id="signup-email" class="form-input" placeholder="étudiant@inspem.fr" required>
-        </div>
+      <section class="legal-section">
+        <h3>2. Données collectées</h3>
+        <p>Nous collectons uniquement les informations nécessaires au bon fonctionnement de notre service d'apprentissage :</p>
+        <ul>
+          <li><strong>Informations de compte :</strong> Votre adresse email et votre mot de passe (crypté de bout en bout via Supabase).</li>
+          <li><strong>Informations académiques :</strong> Votre année d'études choisie (1ère, 2ème ou 3ème année INSPEM) pour vous recommander les bons cours.</li>
+          <li><strong>Statistiques d'utilisation :</strong> Le nombre de téléchargements effectués sur notre plateforme pour appliquer équitablement les limites de la formule gratuite.</li>
+        </ul>
+      </section>
 
-        <div class="form-group">
-          <label for="signup-password" class="form-label">Mot de passe</label>
-          <input type="password" id="signup-password" class="form-input" placeholder="Minimum 6 caractères" minlength="6" required>
-        </div>
+      <section class="legal-section">
+        <h3>3. Hébergement et Sécurité</h3>
+        <p>
+          Vos données sont stockées de manière sécurisée et cryptée au sein de notre infrastructure cloud propulsée par <strong>Supabase</strong>. Aucune donnée n'est vendue ni partagée avec des tiers à des fins publicitaires ou commerciales.
+        </p>
+      </section>
 
-        <div class="form-group">
-          <label for="signup-year" class="form-label">Année Académique</label>
-          <select id="signup-year" class="form-select" required>
-            <option value="" disabled selected>Choisissez votre année académique</option>
-            <option value="1ère année INSPEM">1ère année INSPEM</option>
-            <option value="2ème année INSPEM">2ème année INSPEM</option>
-            <option value="3ème année INSPEM">3ème année INSPEM</option>
-          </select>
-        </div>
-
-        <button type="submit" id="btn-submit" class="btn btn-primary auth-btn">
-          S'inscrire
-        </button>
-      </form>
-
-      <div class="auth-footer">
-        Déjà inscrit ? <a href="login.html">Se connecter</a>
-      </div>
+      <section class="legal-section">
+        <h3>4. Vos droits (RGPD)</h3>
+        <p>
+          Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification, de portabilité et de suppression complète de vos données personnelles. Pour exercer ces droits, vous pouvez nous écrire via notre <a href="contact.html">formulaire de contact</a>.
+        </p>
+      </section>
     </div>
-  </div>
+  </main>
 
-  <!-- Script principal pour gérer l'authentification -->
   <script src="script.js"></script>
-  <!-- Script modulaire pour l'en-tête et le profil -->
   <script src="header.js"></script>
 </body>
 </html>

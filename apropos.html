@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscription - IAFECOLE</title>
+  <title>À propos - IAFECOLE</title>
   <link rel="stylesheet" href="style.css">
   <!-- Chargement du client Supabase depuis le CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <!-- Barre de navigation -->
+  <!-- Barre de navigation dynamique -->
   <header>
     <div class="nav-container">
       <a href="index.html" class="logo">
         <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-signup)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-apropos)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-apropos)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-apropos)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
           <circle cx="12" cy="7" r="1.5" fill="#0ea5e9"/>
           <circle cx="12" cy="17" r="1.5" fill="#4f46e5"/>
           <defs>
-            <linearGradient id="logo-grad-signup" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+            <linearGradient id="logo-grad-apropos" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
               <stop stop-color="#4f46e5"/>
               <stop offset="1" stop-color="#0ea5e9"/>
             </linearGradient>
@@ -83,7 +83,7 @@
             <span class="dropdown-section-title">Info & Support</span>
             <a href="tarifs.html" class="dropdown-item">Tarifs</a>
             <a href="contact.html" class="dropdown-item">Nous contacter</a>
-            <a href="apropos.html" class="dropdown-item">À propos</a>
+            <a href="apropos.html" class="dropdown-item active">À propos</a>
           </div>
           <div class="dropdown-section">
             <span class="dropdown-section-title">Compte</span>
@@ -99,50 +99,37 @@
     </div>
   </header>
 
-  <!-- Conteneur d'authentification -->
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      <h2>Inscription</h2>
-      <p class="auth-subtitle">Créez votre compte étudiant IAFECOLE</p>
+  <main class="about-container">
+    <div class="legal-card">
+      <h2>À propos de IAFECOLE 💡</h2>
+      <p class="last-updated">L'excellence académique à portée de main pour l'INSPEM</p>
 
-      <!-- Message d'alerte pour les retours utilisateurs -->
-      <div id="alert-box" class="alert hidden"></div>
+      <section class="legal-section">
+        <h3>Notre Histoire</h3>
+        <p>
+          Fondée par des passionnés de technologie et des anciens élèves de l'<strong>INSPEM</strong>, <strong>IAFECOLE</strong> est née d'un constat simple : la réussite académique dépend d'un accès rapide, fluide et structuré aux bonnes ressources pédagogiques. Notre but est de centraliser et d'organiser de façon ultra-intuitive les cours de mathématiques, d'informatique, d'intelligence artificielle et de sciences de l'ingénieur.
+        </p>
+      </section>
 
-      <form id="signup-form">
-        <div class="form-group">
-          <label for="signup-email" class="form-label">Adresse Email</label>
-          <input type="email" id="signup-email" class="form-input" placeholder="étudiant@inspem.fr" required>
-        </div>
+      <section class="legal-section">
+        <h3>Notre Vision</h3>
+        <p>
+          Nous croyons en un enseignement sur mesure et sans friction. Qu'il s'agisse de poser les bases de l'algorithmique en 1ère année, d'approfondir le Machine Learning en 2ème année ou de maîtriser les architectures de Deep Learning les plus pointues en 3ème année, nous offrons à chaque promotion un parcours personnalisé propice au succès.
+        </p>
+      </section>
 
-        <div class="form-group">
-          <label for="signup-password" class="form-label">Mot de passe</label>
-          <input type="password" id="signup-password" class="form-input" placeholder="Minimum 6 caractères" minlength="6" required>
-        </div>
-
-        <div class="form-group">
-          <label for="signup-year" class="form-label">Année Académique</label>
-          <select id="signup-year" class="form-select" required>
-            <option value="" disabled selected>Choisissez votre année académique</option>
-            <option value="1ère année INSPEM">1ère année INSPEM</option>
-            <option value="2ème année INSPEM">2ème année INSPEM</option>
-            <option value="3ème année INSPEM">3ème année INSPEM</option>
-          </select>
-        </div>
-
-        <button type="submit" id="btn-submit" class="btn btn-primary auth-btn">
-          S'inscrire
-        </button>
-      </form>
-
-      <div class="auth-footer">
-        Déjà inscrit ? <a href="login.html">Se connecter</a>
-      </div>
+      <section class="legal-section">
+        <h3>Nos Engagements</h3>
+        <ul>
+          <li><strong>Clarté et Rigueur :</strong> Des documents soigneusement sélectionnés et triés.</li>
+          <li><strong>Confidentialité :</strong> Vos données sont stockées de façon sécurisée (via Supabase) et jamais partagées.</li>
+          <li><strong>Solidarité Étudiante :</strong> Une assistance réactive pour vous épauler dans vos moments de révision intenses.</li>
+        </ul>
+      </section>
     </div>
-  </div>
+  </main>
 
-  <!-- Script principal pour gérer l'authentification -->
   <script src="script.js"></script>
-  <!-- Script modulaire pour l'en-tête et le profil -->
   <script src="header.js"></script>
 </body>
 </html>
