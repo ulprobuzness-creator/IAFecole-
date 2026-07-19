@@ -108,10 +108,22 @@
       <!-- Message d'alerte pour les retours utilisateurs -->
       <div id="alert-box" class="alert hidden"></div>
 
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-email" type="button">Email / Gmail</button>
+        <button class="auth-tab" id="tab-phone" type="button">Mobile / Portable</button>
+      </div>
+
       <form id="signup-form">
-        <div class="form-group">
-          <label for="signup-email" class="form-label">Adresse Email</label>
+        <input type="hidden" id="signup-method" value="email">
+
+        <div class="form-group" id="group-email">
+          <label for="signup-email" class="form-label">Adresse Email (Gmail)</label>
           <input type="email" id="signup-email" class="form-input" placeholder="étudiant@inspem.fr" required>
+        </div>
+
+        <div class="form-group hidden" id="group-phone">
+          <label for="signup-phone" class="form-label">Numéro de téléphone portable</label>
+          <input type="tel" id="signup-phone" class="form-input" placeholder="+33 6 12 34 56 78">
         </div>
 
         <div class="form-group">
@@ -133,6 +145,26 @@
           S'inscrire
         </button>
       </form>
+
+      <!-- Formulaire de validation OTP (masqué par défaut) -->
+      <div id="otp-container" class="otp-container hidden">
+        <div class="otp-header">
+          <h3>Validation de sécurité 🔒</h3>
+          <p id="otp-message">Saisissez le code de validation à 6 chiffres reçu sur <span id="otp-channel">votre Gmail</span>.</p>
+        </div>
+
+        <div class="otp-inputs">
+          <input type="text" maxlength="1" class="otp-digit" id="otp-1" required>
+          <input type="text" maxlength="1" class="otp-digit" id="otp-2" required>
+          <input type="text" maxlength="1" class="otp-digit" id="otp-3" required>
+          <input type="text" maxlength="1" class="otp-digit" id="otp-4" required>
+          <input type="text" maxlength="1" class="otp-digit" id="otp-5" required>
+          <input type="text" maxlength="1" class="otp-digit" id="otp-6" required>
+        </div>
+
+        <button type="button" id="btn-verify-otp" class="btn btn-primary full-width">Valider le code</button>
+        <button type="button" id="btn-resend-otp" class="btn btn-outline full-width mt-3">Renvoyer le code</button>
+      </div>
 
       <div class="auth-footer">
         Déjà inscrit ? <a href="login.html">Se connecter</a>
