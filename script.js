@@ -395,6 +395,236 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // --- GESTION DES TABS D'AUTHENTIFICATION & OTP ---
+  const tabEmail = document.getElementById('tab-email');
+  const tabPhone = document.getElementById('tab-phone');
+  const groupEmail = document.getElementById('group-email');
+  const groupPhone = document.getElementById('group-phone');
+  const signupMethod = document.getElementById('signup-method');
+  const loginMethod = document.getElementById('login-method');
+  const signupEmailInput = document.getElementById('signup-email');
+  const signupPhoneInput = document.getElementById('signup-phone');
+  const loginEmailInput = document.getElementById('login-email');
+  const loginPhoneInput = document.getElementById('login-phone');
+
+  // Gérer l'état des onglets
+  if (tabEmail && tabPhone) {
+    tabEmail.addEventListener('click', () => {
+      tabEmail.classList.add('active');
+      tabPhone.classList.remove('active');
+      if (groupEmail) groupEmail.classList.remove('hidden');
+      if (groupPhone) groupPhone.classList.add('hidden');
+      if (signupMethod) signupMethod.value = 'email';
+      if (loginMethod) loginMethod.value = 'email';
+
+      if (signupEmailInput) signupEmailInput.setAttribute('required', 'true');
+      if (signupPhoneInput) signupPhoneInput.removeAttribute('required');
+      if (loginEmailInput) loginEmailInput.setAttribute('required', 'true');
+      if (loginPhoneInput) loginPhoneInput.removeAttribute('required');
+    });
+
+    tabPhone.addEventListener('click', () => {
+      tabPhone.classList.add('active');
+      tabEmail.classList.remove('active');
+      if (groupPhone) groupPhone.classList.remove('hidden');
+      if (groupEmail) groupEmail.classList.add('hidden');
+      if (signupMethod) signupMethod.value = 'phone';
+      if (loginMethod) loginMethod.value = 'phone';
+
+      if (signupPhoneInput) signupPhoneInput.setAttribute('required', 'true');
+      if (signupEmailInput) signupEmailInput.removeAttribute('required');
+      if (loginPhoneInput) loginPhoneInput.setAttribute('required', 'true');
+      if (loginEmailInput) loginEmailInput.removeAttribute('required');
+    });
+  }
+
+  // --- LOGIQUE OTP GLOBALE ET SIMULATION DE PUSH ---
+  let generatedOTP = null;
+  let activeOTPFlow = null; // 'signup' ou 'login'
+  let pendingAuthData = {}; // Stocke les données de formulaire en attendant l'OTP
+
+  function showSimulatedPushNotification(method, target, code) {
+    const existing = document.getElementById('simulated-push-notification');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.id = 'simulated-push-notification';
+    notification.className = 'push-notification';
+
+    let icon = method === 'email' ? '✉️ Gmail' : '💬 SMS';
+    let intro = method === 'email' ? 'Nouveau message' : 'Nouveau SMS';
+
+    notification.innerHTML = `
+      <div class="push-notification-header">
+        <span class="push-icon">${icon}</span>
+        <span class="push-title">${intro}</span>
+        <span class="push-time">À l'instant</span>
+      </div>
+      <div class="push-notification-body">
+        <strong>IAFECOLE Securité</strong> : Votre code de vérification aléatoire est <span class="push-code">${code}</span>. Ne le partagez pas.
+      </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.classList.add('show');
+    }, 100);
+
+    // Supprimer après 15 secondes
+    setTimeout(() => {
+      notification.classList.remove('show');
+      setTimeout(() => notification.remove(), 500);
+    }, 15000);
+  }
+
+  // Configuration de l'auto-tab des chiffres OTP
+  const otpDigits = document.querySelectorAll('.otp-digit');
+  if (otpDigits.length > 0) {
+    otpDigits.forEach((digit, index) => {
+      digit.addEventListener('input', (e) => {
+        // Ne garder que les chiffres
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        if (e.target.value.length === 1 && index < otpDigits.length - 1) {
+          otpDigits[index + 1].focus();
+        }
+      });
+      digit.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
+          otpDigits[index - 1].focus();
+        }
+      });
+    });
+  }
+
+  // Déclencher le flux OTP
+  function triggerOTPFlow(flowType, method, targetVal, authData) {
+    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+    activeOTPFlow = flowType;
+    pendingAuthData = authData;
+
+    // Afficher la notification push simulée
+    showSimulatedPushNotification(method, targetVal, generatedOTP);
+
+    // Mettre à jour l'overlay OTP
+    const otpContainer = document.getElementById('otp-container');
+    const otpChannel = document.getElementById('otp-channel');
+
+    if (otpChannel) {
+      otpChannel.textContent = method === 'email' ? `votre Gmail (${targetVal})` : `votre numéro mobile (${targetVal})`;
+    }
+
+    if (otpContainer) {
+      otpContainer.classList.remove('hidden');
+    }
+
+    // Masquer le formulaire actif
+    const signupForm = document.getElementById('signup-form');
+    const loginForm = document.getElementById('login-form');
+    if (signupForm) signupForm.classList.add('hidden');
+    if (loginForm) loginForm.classList.add('hidden');
+
+    // Focus sur le premier input
+    if (otpDigits.length > 0) {
+      otpDigits[0].focus();
+    }
+
+    showAlert("Un code de vérification aléatoire vous a été envoyé pour des raisons de sécurité.", "success");
+  }
+
+  // Validation du code OTP saisi
+  const btnVerifyOtp = document.getElementById('btn-verify-otp');
+  if (btnVerifyOtp) {
+    btnVerifyOtp.addEventListener('click', async () => {
+      let enteredCode = "";
+      otpDigits.forEach(digit => {
+        enteredCode += digit.value;
+      });
+
+      if (enteredCode.length < 6) {
+        showAlert("Veuillez saisir les 6 chiffres du code de sécurité.", "error");
+        return;
+      }
+
+      if (enteredCode !== generatedOTP) {
+        showAlert("Le code de validation saisi est incorrect. Veuillez réessayer.", "error");
+        // Vider les champs
+        otpDigits.forEach(digit => { digit.value = ""; });
+        if (otpDigits.length > 0) otpDigits[0].focus();
+        return;
+      }
+
+      // Code correct ! Procéder avec l'authentification correspondante
+      hideAlert();
+      const verifyBtnText = btnVerifyOtp.innerHTML;
+      setButtonLoading(btnVerifyOtp, true, verifyBtnText);
+
+      try {
+        if (activeOTPFlow === 'signup') {
+          // --- FLUX INSCRIPTION ---
+          const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+            email: pendingAuthData.email,
+            password: pendingAuthData.password,
+            options: {
+              data: {
+                annee_academique: pendingAuthData.academicYear
+              }
+            }
+          });
+
+          if (authError) {
+            showAlert(`Erreur d'inscription : ${authError.message}`, 'error');
+            setButtonLoading(btnVerifyOtp, false, verifyBtnText);
+            return;
+          }
+
+          const authUser = authData?.user;
+          if (authUser) {
+            showAlert("Validation réussie et compte créé avec succès ! Redirection...", "success");
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 1500);
+          }
+        } else if (activeOTPFlow === 'login') {
+          // --- FLUX CONNEXION ---
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: pendingAuthData.email,
+            password: pendingAuthData.password
+          });
+
+          if (error) {
+            showAlert(`Erreur de connexion : ${error.message}`, 'error');
+            setButtonLoading(btnVerifyOtp, false, verifyBtnText);
+            return;
+          }
+
+          if (data?.session) {
+            showAlert("Validation réussie et connexion établie ! Redirection...", "success");
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 1000);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur post-OTP :", err);
+        showAlert(`Une erreur est survenue : ${err.message}`, 'error');
+        setButtonLoading(btnVerifyOtp, false, verifyBtnText);
+      }
+    });
+  }
+
+  // Renvoyer le code
+  const btnResendOtp = document.getElementById('btn-resend-otp');
+  if (btnResendOtp) {
+    btnResendOtp.addEventListener('click', () => {
+      generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+      showSimulatedPushNotification(pendingAuthData.method, pendingAuthData.targetVal, generatedOTP);
+      showAlert("Un nouveau code de validation de sécurité a été renvoyé !", "success");
+      otpDigits.forEach(digit => { digit.value = ""; });
+      if (otpDigits.length > 0) otpDigits[0].focus();
+    });
+  }
+
   // --- GESTION DU FORMULAIRE D'INSCRIPTION (signup.html) ---
   if (isSignupPage) {
     const signupForm = document.getElementById('signup-form');
@@ -403,69 +633,40 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         hideAlert();
 
-        const email = document.getElementById('signup-email').value.trim();
-        const password = document.getElementById('signup-password').value;
-        const academicYear = document.getElementById('signup-year').value;
-        const submitBtn = document.getElementById('btn-submit');
-        const originalBtnText = submitBtn.innerHTML;
+        const method = signupMethod ? signupMethod.value : 'email';
+        let email = "";
+        let targetVal = "";
 
-        setButtonLoading(submitBtn, true, originalBtnText);
-
-        try {
-          // 1. Inscription dans Supabase Auth
-          const { data: authData, error: authError } = await supabaseClient.auth.signUp({
-            email: email,
-            password: password
-          });
-
-          if (authError) {
-            showAlert(`Erreur d'inscription : ${authError.message}`, 'error');
-            setButtonLoading(submitBtn, false, originalBtnText);
+        if (method === 'email') {
+          email = signupEmailInput.value.trim();
+          targetVal = email;
+          // Vérification rapide d'un Gmail ou adresse standard
+          if (!email.includes('@')) {
+            showAlert("Veuillez saisir une adresse email valide.", "error");
             return;
           }
-
-          const authUser = authData?.user;
-
-          if (authUser) {
-            // 2. Création automatique de la ligne correspondante dans la table 'users'
-            const { error: dbError } = await supabaseClient
-              .from('users')
-              .insert([
-                {
-                  id: authUser.id,
-                  email: authUser.email,
-                  annee_academique: academicYear,
-                  statut_abonnement: 'Gratuit' // Valeur par défaut
-                }
-              ]);
-
-            if (dbError) {
-              console.error("Erreur lors de l'insertion dans la table 'users' :", dbError);
-              showAlert(`Inscription Auth réussie, mais échec de création du profil : ${dbError.message}`, 'error');
-              setButtonLoading(submitBtn, false, originalBtnText);
-              return;
-            }
-
-            // Gestion de la confirmation d'email (si configurée dans Supabase)
-            if (authData.session === null) {
-              showAlert("Inscription réussie ! Un email de confirmation vous a été envoyé. Veuillez le valider pour vous connecter.", "success");
-              signupForm.reset();
-            } else {
-              // Si la confirmation d'email n'est pas requise, la session est ouverte immédiatement
-              showAlert("Inscription réussie ! Redirection en cours...", "success");
-              setTimeout(() => {
-                window.location.href = 'index.html';
-              }, 1500);
-            }
+        } else {
+          const rawPhone = signupPhoneInput.value.trim();
+          if (rawPhone.length < 8) {
+            showAlert("Veuillez saisir un numéro de téléphone portable valide.", "error");
+            return;
           }
-        } catch (err) {
-          console.error("Erreur inattendue :", err);
-          showAlert(`Une erreur inattendue est survenue : ${err.message}`, 'error');
-        } finally {
-          if (document.getElementById('btn-submit') && !document.getElementById('btn-submit').disabled) {
-            setButtonLoading(submitBtn, false, originalBtnText);
-          }
+          targetVal = rawPhone;
+          // Formatage en email pour Supabase Auth
+          email = `${rawPhone.replace(/\s+/g, '')}@phone.iafecole.fr`;
         }
+
+        const password = document.getElementById('signup-password').value;
+        const academicYear = document.getElementById('signup-year').value;
+
+        // Déclencher le flux OTP
+        triggerOTPFlow('signup', method, targetVal, {
+          email: email,
+          password: password,
+          academicYear: academicYear,
+          method: method,
+          targetVal: targetVal
+        });
       });
     }
   }
@@ -478,37 +679,32 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         hideAlert();
 
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value;
-        const submitBtn = document.getElementById('btn-submit');
-        const originalBtnText = submitBtn.innerHTML;
+        const method = loginMethod ? loginMethod.value : 'email';
+        let email = "";
+        let targetVal = "";
 
-        setButtonLoading(submitBtn, true, originalBtnText);
-
-        try {
-          // Connexion avec email et mot de passe
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
-
-          if (error) {
-            showAlert(`Erreur de connexion : ${error.message}`, 'error');
-            setButtonLoading(submitBtn, false, originalBtnText);
+        if (method === 'email') {
+          email = loginEmailInput.value.trim();
+          targetVal = email;
+        } else {
+          const rawPhone = loginPhoneInput.value.trim();
+          if (rawPhone.length < 8) {
+            showAlert("Veuillez saisir un numéro de téléphone portable valide.", "error");
             return;
           }
-
-          if (data?.session) {
-            showAlert("Connexion réussie ! Redirection en cours...", "success");
-            setTimeout(() => {
-              window.location.href = 'index.html';
-            }, 1000);
-          }
-        } catch (err) {
-          console.error("Erreur inattendue :", err);
-          showAlert(`Une erreur inattendue est survenue : ${err.message}`, 'error');
-          setButtonLoading(submitBtn, false, originalBtnText);
+          targetVal = rawPhone;
+          email = `${rawPhone.replace(/\s+/g, '')}@phone.iafecole.fr`;
         }
+
+        const password = document.getElementById('login-password').value;
+
+        // Déclencher le flux OTP
+        triggerOTPFlow('login', method, targetVal, {
+          email: email,
+          password: password,
+          method: method,
+          targetVal: targetVal
+        });
       });
     }
   }
