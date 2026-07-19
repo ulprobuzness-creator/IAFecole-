@@ -335,6 +335,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Si nous sommes sur la page d'accueil/dashboard (index.html)
       if (isIndexPage) {
+        // Redirection obligatoire vers Bienvenue du Directeur si les règles ne sont pas encore acceptées
+        if (localStorage.getItem('iafecole_rules_accepted') !== 'true') {
+          window.location.href = 'bienvenue_directeur.html';
+          return;
+        }
+
         if (visitorContainer) visitorContainer.classList.add('hidden');
         if (studentContainer) studentContainer.classList.remove('hidden');
 
@@ -582,7 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (authUser) {
             showAlert("Validation réussie et compte créé avec succès ! Redirection...", "success");
             setTimeout(() => {
-              window.location.href = 'index.html';
+              window.location.href = 'bienvenue_directeur.html';
             }, 1500);
           }
         } else if (activeOTPFlow === 'login') {
@@ -698,13 +704,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const password = document.getElementById('login-password').value;
 
-        // Déclencher le flux OTP
-        triggerOTPFlow('login', method, targetVal, {
-          email: email,
-          password: password,
-          method: method,
-          targetVal: targetVal
-        });
+        const btnSubmit = document.getElementById('btn-submit');
+        const originalText = btnSubmit ? btnSubmit.innerHTML : "Se connecter";
+        setButtonLoading(btnSubmit, true, originalText);
+
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+          });
+
+          if (error) {
+            showAlert(`Erreur de connexion : ${error.message}`, 'error');
+            setButtonLoading(btnSubmit, false, originalText);
+            return;
+          }
+
+          if (data?.session) {
+            showAlert("Connexion réussie ! Redirection...", "success");
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 1000);
+          }
+        } catch (err) {
+          console.error("Erreur de connexion directe :", err);
+          showAlert(`Une erreur est survenue : ${err.message}`, 'error');
+          setButtonLoading(btnSubmit, false, originalText);
+        }
       });
     }
   }

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenue du Directeur - IAFECOLE</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chargement du client Supabase depuis le CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- Barre de navigation dynamique -->
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-welcome)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-welcome)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-welcome)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+          <circle cx="12" cy="7" r="1.5" fill="#0ea5e9"/>
+          <circle cx="12" cy="17" r="1.5" fill="#4f46e5"/>
+          <defs>
+            <linearGradient id="logo-grad-welcome" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4f46e5"/>
+              <stop offset="1" stop-color="#0ea5e9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">IAFECOLE</span>
+      </a>
+
+      <!-- Zone d'actions de navigation (Tarifs, Contact, Téléchargements, Profil) -->
+      <div class="nav-actions-wrapper">
+        <a href="tarifs.html" class="nav-action-link">Tarifs</a>
+        <a href="contact.html" class="nav-action-link">Contact</a>
+
+        <!-- Compteur de téléchargements restants (masqué par défaut) -->
+        <span id="header-downloads-counter" class="downloads-counter-badge hidden">5/5 téléchargements</span>
+
+        <!-- Menu d'authentification pour visiteur (masqué par défaut) -->
+        <div id="nav-visitor-auth" class="nav-visitor-auth hidden">
+          <a href="login.html" class="nav-action-link nav-link-login">Se connecter</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">S'inscrire</a>
+        </div>
+
+        <!-- Avatar et Dropdown Profil (masqué par défaut) -->
+        <div id="nav-profile-wrapper" class="profile-dropdown-wrapper hidden">
+          <button id="header-avatar-btn" class="avatar-btn" title="Mon compte">--</button>
+          <div id="header-profile-dropdown" class="profile-dropdown-content hidden">
+            <div class="profile-dropdown-user">
+              <span class="user-label">Étudiant</span>
+              <span id="header-profile-email" class="user-email">...</span>
+            </div>
+            <div class="profile-dropdown-divider"></div>
+            <a href="index.html#student-container" class="profile-dropdown-item">Mon compte</a>
+            <button id="header-logout-btn" class="profile-dropdown-item btn-logout-item">Déconnexion</button>
+            <div class="profile-dropdown-divider"></div>
+            <div class="profile-dropdown-footer">
+              <a href="confidentialite.html" class="privacy-link">Confidentialité</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bouton MENU et son dropdown -->
+      <div class="menu-dropdown-wrapper">
+        <button id="menu-toggle-btn" class="btn btn-menu">
+          <span>MENU ☰</span>
+        </button>
+        <div id="menu-dropdown-content" class="dropdown-content hidden">
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Navigation</span>
+            <a href="index.html" class="dropdown-item">Accueil</a>
+            <a href="index.html#student-container" id="menu-link-dashboard" class="dropdown-item hidden">Mon Espace</a>
+          </div>
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Cours INSPEM</span>
+            <button id="menu-btn-year1" class="dropdown-item dropdown-btn">1ère année INSPEM</button>
+            <button id="menu-btn-year2" class="dropdown-item dropdown-btn">2ème année INSPEM</button>
+            <button id="menu-btn-year3" class="dropdown-item dropdown-btn">3ème année INSPEM</button>
+          </div>
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Info & Support</span>
+            <a href="tarifs.html" class="dropdown-item">Tarifs</a>
+            <a href="contact.html" class="dropdown-item">Nous contacter</a>
+            <a href="apropos.html" class="dropdown-item">À propos</a>
+          </div>
+          <div class="dropdown-section">
+            <span class="dropdown-section-title">Compte</span>
+            <div id="menu-user-info" class="menu-user-info hidden">
+              <span id="menu-user-email" class="menu-user-email"></span>
+            </div>
+            <a href="login.html" id="menu-link-login" class="dropdown-item">Se connecter</a>
+            <a href="signup.html" id="menu-link-signup" class="dropdown-item">Inscription</a>
+            <button id="menu-btn-logout" class="dropdown-item dropdown-btn btn-danger-text hidden">Déconnexion</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="welcome-director-container">
+    <div class="director-card">
+      <div class="director-header">
+        <div class="director-badge">✉️ Message de la Direction</div>
+        <h2>BIENVENUE DU DIRECTEUR 🎓</h2>
+        <p class="director-subtitle">Un mot d'accueil chaleureux pour tous nos nouveaux étudiants</p>
+      </div>
+
+      <div class="director-content">
+        <section class="director-section">
+          <h3>Présentation de la plateforme IAFECOLE</h3>
+          <p>
+            <strong>IAFECOLE</strong> est une plateforme éducative innovante conçue spécifiquement pour vous, étudiants de l'<strong>INSPEM</strong>. Notre outil centralise l'accès à un catalogue complet de ressources pédagogiques de haute qualité couvrant l'intelligence artificielle, l'apprentissage automatique, l'algorithmique et les sciences de l'ingénieur. Que vous soyez en première, deuxième ou troisième année, IAFECOLE vous accompagne à chaque étape de votre progression académique avec des supports de cours structurés, des exercices interactifs, et des modules d'évaluation adaptés.
+          </p>
+        </section>
+
+        <section class="director-section">
+          <h3>Mot de bienvenue du Directeur</h3>
+          <p>
+            "Chers étudiants, c'est avec une immense fierté et un grand enthousiasme que je vous souhaite la plus chaleureuse des bienvenues sur <strong>IAFECOLE</strong>. L'entrée à l'INSPEM marque le début d'une aventure intellectuelle et technologique passionnante. Dans un monde en constante mutation où l'intelligence artificielle redéfinit les contours de toutes les industries, notre rôle est de vous fournir les meilleurs outils d'apprentissage pour vous préparer à devenir les leaders et ingénieurs de demain."
+          </p>
+          <p>
+            "Saisissez chaque opportunité d'apprendre, d'expérimenter et de collaborer. Cette plateforme a été développée pour simplifier votre parcours d'études, vous faire gagner en efficacité et cultiver votre curiosité scientifique. Je vous encourage à être assidus, créatifs et persévérants dans vos apprentissages."
+          </p>
+        </section>
+
+        <section class="director-section">
+          <h3>Remerciements chaleureux</h3>
+          <p>
+            Je tiens à remercier personnellement l'ensemble des professeurs, contributeurs, concepteurs pédagogiques et ingénieurs qui ont œuvré sans relâche pour donner vie à cette plateforme éducative d'exception. Et surtout, <strong>merci à vous</strong>, chers étudiants, pour votre confiance et votre engagement continu vers l'excellence. Votre succès universitaire est notre plus belle récompense et la raison d'être d'IAFECOLE.
+          </p>
+        </section>
+      </div>
+
+      <div class="director-divider"></div>
+
+      <!-- Acceptation des règles et politique de confidentialité -->
+      <form id="rules-agreement-form" class="rules-form">
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="accept-rules" class="rules-checkbox" required>
+          <label for="accept-rules" class="rules-label">
+            J'ai lu, compris et j'accepte expressément les <a href="confidentialite.html" target="_blank" class="accent-link">règles d'utilisation</a> ainsi que la <a href="confidentialite.html" target="_blank" class="accent-link">politique de confidentialité</a> de la plateforme IAFECOLE.
+          </label>
+        </div>
+
+        <button type="submit" id="btn-enter-dashboard" class="btn btn-primary full-width mt-4" disabled>
+          Accepter et accéder à mon espace
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="header.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const acceptCheckbox = document.getElementById('accept-rules');
+      const enterBtn = document.getElementById('btn-enter-dashboard');
+      const agreementForm = document.getElementById('rules-agreement-form');
+
+      if (acceptCheckbox && enterBtn) {
+        acceptCheckbox.addEventListener('change', () => {
+          enterBtn.disabled = !acceptCheckbox.checked;
+        });
+      }
+
+      if (agreementForm) {
+        agreementForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          if (acceptCheckbox.checked) {
+            // Enregistrer l'acceptation
+            localStorage.setItem('iafecole_rules_accepted', 'true');
+            window.location.href = 'index.html';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
