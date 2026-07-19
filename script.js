@@ -564,7 +564,12 @@ document.addEventListener('DOMContentLoaded', () => {
           // --- FLUX INSCRIPTION ---
           const { data: authData, error: authError } = await supabaseClient.auth.signUp({
             email: pendingAuthData.email,
-            password: pendingAuthData.password
+            password: pendingAuthData.password,
+            options: {
+              data: {
+                annee_academique: pendingAuthData.academicYear
+              }
+            }
           });
 
           if (authError) {
@@ -575,24 +580,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const authUser = authData?.user;
           if (authUser) {
-            // Création dans la table 'users'
-            const { error: dbError } = await supabaseClient
-              .from('users')
-              .insert([
-                {
-                  id: authUser.id,
-                  email: authUser.email,
-                  annee_academique: pendingAuthData.academicYear,
-                  statut_abonnement: 'Gratuit'
-                }
-              ]);
-
-            if (dbError) {
-              showAlert(`Inscription Auth réussie, mais échec de création du profil : ${dbError.message}`, 'error');
-              setButtonLoading(btnVerifyOtp, false, verifyBtnText);
-              return;
-            }
-
             showAlert("Validation réussie et compte créé avec succès ! Redirection...", "success");
             setTimeout(() => {
               window.location.href = 'index.html';
