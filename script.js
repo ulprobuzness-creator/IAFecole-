@@ -21,61 +21,61 @@ window.supabaseClient = supabaseClient;
 const COURSES_DATABASE = {
   "1ère année INSPEM": [
     {
-      title: "Introduction à l'IA",
+      title: "Introduction au Génie Pétrolier",
       tag: "Nouveau",
-      desc: "Bases de l'apprentissage automatique, historique de l'IA et premiers pas avec Python.",
+      desc: "Bases de l'amont/aval, exploration, raffinage, et cycle de vie des hydrocarbures.",
       lessons: 8
     },
     {
-      title: "Mathématiques pour l'IA I",
+      title: "Géologie Générale et Sédimentologie",
       tag: "Important",
-      desc: "Algèbre linéaire, matrices, et vecteurs essentiels pour comprendre les algorithmes d'IA.",
+      desc: "Étude des bassins sédimentaires et des roches réservoirs pour le piégeage de pétrole.",
       lessons: 12
     },
     {
-      title: "Algorithmique Fondamentale",
+      title: "Thermodynamique des Fluides de Gisement",
       tag: "En cours",
-      desc: "Structures de données fondamentales et logique algorithmique pour le développement moderne.",
+      desc: "Principes fondamentaux des gaz et liquides sous pression dans les gisements pétroliers.",
       lessons: 10
     }
   ],
   "2ème année INSPEM": [
     {
-      title: "Machine Learning Supervisé",
+      title: "Ingénierie de Forage et Équipements",
       tag: "Recommandé",
-      desc: "Régression linéaire, classification, arbres de décision et forêts aléatoires avec Scikit-Learn.",
+      desc: "Forage vertical et rotatif, boues de forage, et tubage des puits d'exploration.",
       lessons: 15
     },
     {
-      title: "Bases de Données & SQL",
+      title: "Physique des Réservoirs (Pétrophysique)",
       tag: "Essentiel",
-      desc: "Modélisation relationnelle de données, indexation et requêtes complexes avec PostgreSQL.",
+      desc: "Porosité, perméabilité, écoulements multiphasiques et application des lois de Darcy.",
       lessons: 12
     },
     {
-      title: "Introduction aux Réseaux de Neurones",
+      title: "Raffinage et Pétrochimie",
       tag: "Intermédiaire",
-      desc: "Concepts du perceptron, fonctions d'activation, rétropropagation et premières architectures.",
+      desc: "Distillation atmosphérique, craquage catalytique, et traitement du gaz naturel.",
       lessons: 10
     }
   ],
   "3ème année INSPEM": [
     {
-      title: "Deep Learning & Vision",
+      title: "Simulation de Réservoir Avancée",
       tag: "Avancé",
-      desc: "Réseaux de neurones convolutifs (CNN), segmentation et traitement d'images avancés avec PyTorch.",
+      desc: "Modélisation numérique des gisements par différences finies et prévisions de production.",
       lessons: 18
     },
     {
-      title: "Traitement du Langage Naturel (NLP)",
+      title: "Forage Dirigé et Complétion de Puits",
       tag: "Spécialisé",
-      desc: "Modèles de langage, Tokenisation, Transformers et applications avec HuggingFace.",
+      desc: "Trajectoires horizontales, fracturation hydraulique, et têtes de puits sous-marines.",
       lessons: 14
     },
     {
-      title: "MLOps & Déploiement Cloud",
+      title: "Transition Énergétique & Stockage (CCUS)",
       tag: "Projet final",
-      desc: "Déploiement en production, Docker, architectures FastAPI et intégration continue (CI/CD) de modèles d'IA.",
+      desc: "Décarbonation de l'industrie, stockage souterrain de CO2 et intégration de l'hydrogène vert.",
       lessons: 10
     }
   ]
