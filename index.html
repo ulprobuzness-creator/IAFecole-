@@ -22,15 +22,20 @@
     <div class="nav-container">
       <a href="index.html" class="logo">
         <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#logo-grad-main)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 17L12 22L22 17" stroke="url(#logo-grad-main)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 12L12 17L22 12" stroke="url(#logo-grad-main)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
-          <circle cx="12" cy="7" r="1.5" fill="#0ea5e9"/>
-          <circle cx="12" cy="17" r="1.5" fill="#4f46e5"/>
+          <!-- Oil derrick legs -->
+          <path d="M6 22L12 4L18 22" stroke="url(#logo-grad-main)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Horizontal girders -->
+          <path d="M8 16H16" stroke="url(#logo-grad-main)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M10 10H14" stroke="url(#logo-grad-main)" stroke-width="1.8" stroke-linecap="round"/>
+          <!-- Cross braces -->
+          <path d="M8 16L14 10" stroke="url(#logo-grad-main)" stroke-width="1.2" opacity="0.8"/>
+          <path d="M16 16L10 10" stroke="url(#logo-grad-main)" stroke-width="1.2" opacity="0.8"/>
+          <!-- Oil drop/flame at the top -->
+          <path d="M12 2C12 2 13.5 4 13.5 5.5C13.5 6.4 12.8 7.2 12 7.2C11.2 7.2 10.5 6.4 10.5 5.5C10.5 4 12 2 12 2Z" fill="#f59e0b"/>
           <defs>
-            <linearGradient id="logo-grad-main" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#4f46e5"/>
-              <stop offset="1" stop-color="#0ea5e9"/>
+            <linearGradient id="logo-grad-main" x1="6" y1="4" x2="18" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#3b82f6"/>
+              <stop offset="1" stop-color="#0284c7"/>
             </linearGradient>
           </defs>
         </svg>
@@ -117,13 +122,13 @@
           <button id="welcome-close-btn" class="welcome-close-btn" title="Masquer ce message">×</button>
         </div>
         <div class="welcome-body">
-          <h3>Bienvenue sur IAFECOLE ! 👋</h3>
+          <h3>Bienvenue sur IAFECOLE - INSPEM ! 🛢️</h3>
           <p class="welcome-mission">
-            Notre mission est d'accompagner chaque étudiant de l'<strong>INSPEM</strong> dans sa réussite académique en facilitant l'accès direct et structuré aux documents de cours, exercices et ressources pédagogiques, organisés par année d'études et par matière.
+            Notre mission est d'accompagner chaque étudiant de l'<strong>INSPEM (Université Nationale du Pétrole et de l'Énergie)</strong> dans sa réussite académique en facilitant l'accès direct et structuré aux documents de cours, exercices et ressources pédagogiques en Ingénierie Pétrolière, Forage, Raffinage et Géosciences, organisés par année d'études.
           </p>
           <div class="welcome-divider"></div>
           <p class="welcome-encouragement">
-            Chaque heure passée à étudier, chaque effort fourni et chaque obstacle surmonté vous rapprochent de vos rêves de futurs ingénieurs. Nous tenons à saluer chaleureusement votre persévérance et votre détermination. Croyez en vous, donnez le meilleur de vous-même et sachez que toute l'équipe d'IAFECOLE vous souhaite une réussite exceptionnelle dans vos études ! 🚀
+            Chaque heure passée à étudier les réservoirs, chaque équilibre de fluide calculé et chaque défi surmonté vous rapprochent de vos futurs rôles d'ingénieurs et leaders de l'industrie énergétique. Nous tenons à saluer chaleureusement votre persévérance. Croyez en vous et devenez les piliers de l'énergie de demain ! 🚀
           </p>
         </div>
       </div>
@@ -134,10 +139,10 @@
 
     <!-- 1. CONTAINER VISITEUR (Public / Non Connecté) -->
     <section id="visitor-container" class="hero hidden">
-      <h1>Découvrez l'avenir de l'éducation avec <span>IAFECOLE</span></h1>
+      <h1>L'excellence académique en <span>Ingénierie Pétrolière & Énergie</span></h1>
       <p>
-        Accédez à des cours exclusifs d'Intelligence Artificielle et de sciences de l'ingénieur,
-        spécifiquement adaptés pour l'INSPEM (1ère, 2ème et 3ème année).
+        Accédez à des ressources exclusives de Forage, de Géosciences de réservoirs, de Pétrochimie et de Raffinage,
+        spécifiquement adaptées pour les étudiants de l'INSPEM (1ère, 2ème et 3ème année).
       </p>
       <div class="hero-ctas">
         <a href="signup.html" class="btn btn-primary">Commencer gratuitement</a>

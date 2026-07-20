@@ -1,8 +1,8 @@
 /* style.css - IAFECOLE styles */
 :root {
-  --primary-color: #4f46e5;
-  --primary-hover: #4338ca;
-  --secondary-color: #06b6d4;
+  --primary-color: #0284c7;
+  --primary-hover: #0369a1;
+  --secondary-color: #f59e0b;
   --bg-color: #f8fafc;
   --card-bg: #ffffff;
   --text-main: #0f172a;
@@ -125,7 +125,7 @@ header {
 }
 
 .btn-menu {
-  background: linear-gradient(135deg, var(--primary-color), #6366f1);
+  background: linear-gradient(135deg, var(--primary-color), #0f172a);
   color: white;
   border-radius: 50px;
   padding: 0.6rem 1.4rem;
@@ -138,20 +138,20 @@ header {
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
 }
 
 .btn-menu:hover {
-  background: linear-gradient(135deg, var(--primary-hover), #4f46e5);
+  background: linear-gradient(135deg, var(--primary-hover), #1e293b);
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35);
 }
 
 .btn-menu:active,
 .btn-menu.active {
-  background: #3730a3;
+  background: #0f172a;
   transform: translateY(0) scale(0.96);
-  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.15);
+  box-shadow: 0 2px 5px rgba(2, 132, 199, 0.15);
 }
 
 .dropdown-content {
