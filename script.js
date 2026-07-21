@@ -586,6 +586,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const authUser = authData?.user;
           if (authUser) {
+            // Connexion explicite immédiate pour garantir une session active et persistée
+            const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+              email: pendingAuthData.email,
+              password: pendingAuthData.password
+            });
+
+            if (signInError) {
+              console.warn("Erreur de connexion automatique après inscription :", signInError.message);
+            }
+
             showAlert("Validation réussie et compte créé avec succès ! Redirection...", "success");
             setTimeout(() => {
               window.location.href = 'bienvenue_directeur.html';
