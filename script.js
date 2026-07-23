@@ -586,6 +586,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const authUser = authData?.user;
           if (authUser) {
+            // Garantir la création de la ligne correspondante dans la table publique 'users'
+            try {
+              const { error: dbError } = await supabaseClient
+                .from('users')
+                .upsert({
+                  id: authUser.id,
+                  email: authUser.email,
+                  annee_academique: pendingAuthData.academicYear,
+                  statut_abonnement: 'Gratuit'
+                });
+              if (dbError) {
+                console.warn("Échec de l'upsert manuel dans la table 'users', mais l'inscription Auth a réussi :", dbError);
+              }
+            } catch (dbErr) {
+              console.warn("Erreur lors de la tentative d'upsert manuel :", dbErr);
+            }
+
             showAlert("Validation réussie et compte créé avec succès ! Redirection...", "success");
             setTimeout(() => {
               window.location.href = 'bienvenue_directeur.html';
