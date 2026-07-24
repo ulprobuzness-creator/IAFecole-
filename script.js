@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let targetVal = "";
 
         if (method === 'email') {
-          email = signupEmailInput.value.trim();
+          email = signupEmailInput.value.trim().toLowerCase();
           targetVal = email;
           // Vérification rapide d'un Gmail ou adresse standard
           if (!email.includes('@')) {
@@ -700,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let targetVal = "";
 
         if (method === 'email') {
-          email = loginEmailInput.value.trim();
+          email = loginEmailInput.value.trim().toLowerCase();
           targetVal = email;
         } else {
           const rawPhone = loginPhoneInput.value.trim();

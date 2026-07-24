@@ -24,7 +24,25 @@ CREATE POLICY "Les utilisateurs peuvent modifier leur propre profil"
   USING (auth.uid() = id);
 
 -- 2. Fonction de gestion lors de la création d'un nouvel utilisateur Auth
--- Confirme automatiquement l'utilisateur pour contourner les blocages liés à "Email not confirmed"
+-- 2. Fonction pour confirmer automatiquement l'utilisateur avant insertion dans auth.users
+CREATE OR REPLACE FUNCTION public.auto_confirm_new_user()
+RETURNS trigger AS $$
+BEGIN
+  NEW.email_confirmed_at = COALESCE(NEW.email_confirmed_at, NOW());
+  NEW.phone_confirmed_at = COALESCE(NEW.phone_confirmed_at, NOW());
+  NEW.confirmed_at = COALESCE(NEW.confirmed_at, NOW());
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger BEFORE INSERT pour assurer une confirmation instantanée
+DROP TRIGGER IF EXISTS on_auth_user_created_before ON auth.users;
+CREATE TRIGGER on_auth_user_created_before
+  BEFORE INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.auto_confirm_new_user();
+
+-- 3. Fonction de gestion lors de la création d'un nouvel utilisateur Auth
+-- Copie l'étudiant vers public.users et force la confirmation (sécurité double)
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
@@ -37,7 +55,7 @@ BEGIN
     'Gratuit'
   );
 
-  -- Confirmation automatique dans auth.users (nécessite SECURITY DEFINER)
+  -- Confirmation de secours dans auth.users
   UPDATE auth.users
   SET
     email_confirmed_at = COALESCE(email_confirmed_at, NOW()),
@@ -49,7 +67,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- 3. Trigger pour exécuter la fonction automatiquement après insertion dans auth.users
+-- Trigger AFTER INSERT pour copier l'utilisateur
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
