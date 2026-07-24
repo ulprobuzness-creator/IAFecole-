@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IAFECOLE - Plateforme Éducative</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chargement du client Supabase depuis le CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <!-- Overlay de chargement pour éviter les sauts d'affichage de session -->
@@ -67,12 +65,10 @@
           </div>
           <div class="dropdown-section">
             <span class="dropdown-section-title">Compte</span>
-            <div id="menu-user-info" class="menu-user-info hidden">
-              <span id="menu-user-email" class="menu-user-email"></span>
+            <div id="menu-user-info" class="menu-user-info">
+              <span id="menu-user-email" class="menu-user-email" style="font-weight: 700; color: var(--secondary-color);">Étudiant Invité</span>
             </div>
-            <a href="login.html" id="menu-link-login" class="dropdown-item">Se connecter</a>
-            <a href="signup.html" id="menu-link-signup" class="dropdown-item btn btn-primary btn-sm" style="color: white !important; justify-content: center; text-align: center; margin-top: 0.5rem;">S'inscrire</a>
-            <button id="menu-btn-logout" class="dropdown-item dropdown-btn btn-danger-text hidden">Déconnexion</button>
+            <button id="menu-btn-reset-profile" class="dropdown-item dropdown-btn btn-danger-text" style="margin-top: 0.5rem;">Réinitialiser mon profil</button>
           </div>
         </div>
       </div>
@@ -104,41 +100,146 @@
     <!-- Message d'alerte pour les retours utilisateurs -->
     <div id="alert-box" class="alert hidden"></div>
 
-    <!-- 1. CONTAINER VISITEUR (Public / Non Connecté) -->
-    <section id="visitor-container" class="hero hidden">
-      <h1>L'excellence académique en <span>Ingénierie Pétrolière & Énergie</span></h1>
-      <p>
-        Accédez à des ressources exclusives de Forage, de Géosciences de réservoirs, de Pétrochimie et de Raffinage,
-        spécifiquement adaptées pour les étudiants de l'INSPEM (1ère, 2ème et 3ème année).
-      </p>
-      <div class="hero-ctas">
-        <a href="signup.html" class="btn btn-primary">Commencer gratuitement</a>
-        <a href="login.html" class="btn btn-outline">Se connecter</a>
+    <!-- 1. CONTAINER VISITEUR / ONBOARDING (Sans base de données) -->
+    <section id="visitor-container" class="hero">
+      <div class="onboarding-card">
+        <h1>L'excellence académique en <span>Génie Pétrolier & Énergie</span></h1>
+        <p class="hero-subtitle">
+          Accédez aux ressources professionnelles exclusives (Forage, Pétrophysique, Raffinage) adaptées à chaque année de l'INSPEM.
+        </p>
+
+        <form id="local-onboarding-form" class="onboarding-form">
+          <div class="onboarding-row">
+            <div class="form-group-custom">
+              <label for="student-firstname" class="form-label-custom">Votre Prénom</label>
+              <input type="text" id="student-firstname" class="form-input-custom" placeholder="Ex: Koffi, Amina, Marie..." required>
+            </div>
+
+            <div class="form-group-custom">
+              <label for="student-year-select" class="form-label-custom">Année académique INSPEM</label>
+              <select id="student-year-select" class="form-select-custom" required>
+                <option value="1ère année INSPEM">1ère année INSPEM</option>
+                <option value="2ème année INSPEM">2ème année INSPEM</option>
+                <option value="3ème année INSPEM">3ème année INSPEM</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-onboard">
+            <span>Découvrir mon espace personnalisé 🚀</span>
+          </button>
+        </form>
       </div>
     </section>
 
-    <!-- 2. CONTAINER ETUDIANT (Protégé / Connecté) -->
+    <!-- 2. CONTAINER ETUDIANT (Local State) -->
     <section id="student-container" class="hidden">
       <!-- En-tête du Dashboard étudiant -->
-      <div class="dashboard-header">
-        <div class="dashboard-title">
-          <h2>Mon Espace d'Apprentissage</h2>
-          <p>Bienvenue de retour sur votre espace de formation personnalisé.</p>
+      <div class="dashboard-header-wrapper">
+        <div class="dashboard-header">
+          <div class="dashboard-title">
+            <h2 id="dashboard-welcome-heading">Ravi de vous revoir !</h2>
+            <p id="dashboard-welcome-sub">Prêt à exceller et dompter vos cours aujourd'hui ?</p>
+          </div>
+          <div class="badge-container">
+            <span id="user-year-badge" class="user-badge">1ère année INSPEM</span>
+            <span id="user-sub-badge" class="subscription-badge">Compte Invité</span>
+          </div>
         </div>
-        <div>
-          <span id="user-year-badge" class="user-badge">...</span>
-          <span id="user-sub-badge" class="subscription-badge">...</span>
+
+        <!-- Moteur de recherche et filtres de cours -->
+        <div class="search-filters-bar">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="course-search-input" placeholder="Rechercher un cours, un concept (Ex: Forage, Gisement, Darcy)..." class="search-field">
+          </div>
+          <div class="quick-status-filters">
+            <button class="filter-btn active" data-filter="all">Tous les cours</button>
+            <button class="filter-btn" data-filter="studied">En cours d'étude</button>
+          </div>
         </div>
       </div>
 
       <!-- Section des cours dynamique -->
       <div class="courses-section">
-        <h3>Vos cours recommandés</h3>
+        <div class="section-title-bar">
+          <h3>Vos modules d'apprentissage INSPEM</h3>
+          <span class="courses-count-label" id="courses-count-text">3 modules disponibles</span>
+        </div>
+
         <div id="courses-list" class="courses-grid">
           <!-- Les cartes de cours seront insérées ici dynamiquement par script.js -->
         </div>
       </div>
     </section>
+
+    <!-- 3. MODAL D'ÉTUDES INTERACTIF -->
+    <div id="course-study-modal" class="modal hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content-wrapper">
+        <div class="modal-card">
+          <div class="modal-header">
+            <div class="modal-header-text">
+              <span class="modal-badge-tag" id="modal-course-tag">Module</span>
+              <h3 id="modal-course-title">Titre du Cours</h3>
+            </div>
+            <button class="modal-close-btn" id="close-study-modal-btn">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="modal-split">
+              <!-- Côté progression et leçons -->
+              <div class="modal-left">
+                <h4>📚 Programme & Leçons</h4>
+                <p class="modal-sec-text">Cochez vos leçons assimilées pour faire progresser votre score.</p>
+
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill" id="modal-progress-bar"></div>
+                  <span class="progress-text" id="modal-progress-text">0% complété</span>
+                </div>
+
+                <div class="lessons-checklist" id="modal-lessons-list">
+                  <!-- Insérées dynamiquement -->
+                </div>
+              </div>
+
+              <!-- Côté Quiz interactif -->
+              <div class="modal-right">
+                <div class="quiz-box">
+                  <h4>🧠 Quiz d'Auto-Évaluation</h4>
+                  <p class="modal-sec-text" id="quiz-question">Question du quiz...</p>
+
+                  <div class="quiz-options" id="quiz-options-container">
+                    <!-- Options de quiz -->
+                  </div>
+
+                  <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                </div>
+
+                <div class="document-download-box">
+                  <h4>📥 Supports de Cours (PDF / Fiche)</h4>
+                  <p class="modal-sec-text">Téléchargez la fiche synthèse récapitulative pour réviser hors-ligne.</p>
+                  <button class="btn btn-download-pdf" id="download-pdf-btn">
+                    <span>Télécharger le PDF Synthèse</span>
+                  </button>
+                  <div class="download-progress-container hidden" id="download-progress-container">
+                    <div class="download-bar">
+                      <div class="download-bar-fill" id="download-bar-fill"></div>
+                    </div>
+                    <span class="download-percent" id="download-percent-text">Préparation...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast Moderne -->
+    <div id="toast-notification" class="toast hidden">
+      <span class="toast-icon">✨</span>
+      <span class="toast-message" id="toast-msg">Notification</span>
+    </div>
   </main>
 
   <!-- Script principal pour gérer la logique et l'état Supabase Auth -->

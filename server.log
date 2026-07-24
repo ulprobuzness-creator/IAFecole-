@@ -1,160 +1,18 @@
-127.0.0.1 - - [15/Jul/2026 23:43:37] "HEAD /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [15/Jul/2026 23:44:45] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [15/Jul/2026 23:44:48] "GET /apropos.html HTTP/1.1" 200 -
-127.0.0.1 - - [18/Jul/2026 12:05:20] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [18/Jul/2026 12:05:20] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [18/Jul/2026 12:05:20] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [18/Jul/2026 12:05:20] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [18/Jul/2026 12:05:20] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:07:59] "GET /signup.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:07:59] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:07:59] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:07:59] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:27] "GET /signup.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:27] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:27] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:27] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:56] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:56] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:56] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:56] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:56] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:16:59] "GET /apropos.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:17:34] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:17:34] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:17:34] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:17:34] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:17:34] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:18:06] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:18:06] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:18:06] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:18:06] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:18:06] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:18:08] "GET /tarifs.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 10:18:09] "GET /contact.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:32:53] "GET /signup.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:32:53] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:32:53] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:32:53] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:25] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:25] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:25] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:25] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:25] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:28] "GET /apropos.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:32] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:32] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:32] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:32] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:32] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:39] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:39] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:39] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:39] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:39] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:41] "GET /tarifs.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 22:33:42] "GET /contact.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:02] "GET /signup.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:02] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:02] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:02] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:50] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:50] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:50] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:50] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:50] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:53] "GET /apropos.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:57] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:57] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:57] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:57] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:15:57] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:03] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:03] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:03] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:03] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:03] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:05] "GET /tarifs.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:06] "GET /contact.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:47] "GET /bienvenue_directeur.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:47] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:47] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:47] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:49] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:16:49] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:17:54] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:17:54] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:17:54] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:17:54] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:17:54] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:17:57] "GET /apropos.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:00] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:00] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:00] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:00] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:00] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:06] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:06] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:06] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:06] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:06] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:08] "GET /tarifs.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:09] "GET /contact.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:15] "GET /bienvenue_directeur.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:15] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:15] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:15] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:17] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [19/Jul/2026 23:18:17] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:15] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:15] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:15] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:15] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:15] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:18] "GET /apropos.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:21] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:21] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:21] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:21] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:21] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:28] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:28] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:28] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:28] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:28] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:30] "GET /tarifs.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:31] "GET /contact.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:36] "GET /bienvenue_directeur.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:36] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:36] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:36] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:38] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:41:38] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:44:52] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:44:52] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:44:52] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:44:52] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:44:52] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:44:55] "GET /apropos.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:45:35] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:45:35] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:45:35] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:45:35] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:45:35] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:13] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:13] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:13] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:13] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:13] "GET /welcome.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:15] "GET /tarifs.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:16] "GET /contact.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:55] "GET /bienvenue_directeur.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:55] "GET /style.css HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:55] "GET /script.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:55] "GET /header.js HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:57] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [20/Jul/2026 22:46:57] "GET /welcome.js HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/http/server.py", line 1329, in <module>
+    test(
+  File "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/http/server.py", line 1276, in test
+    with ServerClass(addr, HandlerClass) as httpd:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/http/server.py", line 1323, in server_bind
+    return super().server_bind()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/http/server.py", line 140, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/home/jules/.pyenv/versions/3.12.13/lib/python3.12/socketserver.py", line 478, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use

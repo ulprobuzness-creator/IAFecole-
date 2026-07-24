@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact - IAFECOLE</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chargement du client Supabase depuis le CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <!-- Barre de navigation dynamique -->
@@ -54,12 +52,10 @@
           </div>
           <div class="dropdown-section">
             <span class="dropdown-section-title">Compte</span>
-            <div id="menu-user-info" class="menu-user-info hidden">
-              <span id="menu-user-email" class="menu-user-email"></span>
+            <div id="menu-user-info" class="menu-user-info">
+              <span id="menu-user-email" class="menu-user-email" style="font-weight: 700; color: var(--secondary-color);">Étudiant Invité</span>
             </div>
-            <a href="login.html" id="menu-link-login" class="dropdown-item">Se connecter</a>
-            <a href="signup.html" id="menu-link-signup" class="dropdown-item btn btn-primary btn-sm" style="color: white !important; justify-content: center; text-align: center; margin-top: 0.5rem;">S'inscrire</a>
-            <button id="menu-btn-logout" class="dropdown-item dropdown-btn btn-danger-text hidden">Déconnexion</button>
+            <button id="menu-btn-reset-profile" class="dropdown-item dropdown-btn btn-danger-text" style="margin-top: 0.5rem;">Réinitialiser mon profil</button>
           </div>
         </div>
       </div>
